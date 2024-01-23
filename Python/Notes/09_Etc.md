@@ -39,3 +39,45 @@ C'est plus élégant et moins le bazar
 
 Le "système d'honneur" de Python fait qu'il n'y a pas de constante réelle assignée au langage.
 On nomme nos VARIABLES en MAJUSCULES pour indiquer aux lecteurs du code que cette variable doit rester constante.
+
+## Type Hints
+
+https://docs.python.org/3/library/typing.html
+
+En python, lorsqu'on assigne une valeur à une variable, on est pas obligé de donner le type de valeur au programme.
+Ca peut être primordial pour d'autres langages.
+
+
+
+Le module mypy permet de vérifier que le programme fonctionne correctement, en vérifiant que les variables envoyées aux fonctions sont du bon type.
+
+https://mypy.readthedocs.io/en/stable/
+
+```python
+# Un exemple de Type hint, int indique le type de n, et None la return value de meow
+def meow(n: int) -> None:
+    ...
+# OU
+number: int = int(input("Number: "))
+```
+
+## """Documentation (Docstring)"""
+
+Certains outils permettent d'analyser, d'extraire ces informations et de générer du HTML ou des PDF, en mettant les commentaires entre des """triples-quotes"""
+
+```python
+def meow(n: int):
+    """
+    Meow n times.
+
+    :param n: Number of times to meow
+    :type n: int
+    :raise TypeError: If n is not an int
+    :return: A string of n meows
+    :rtype: str
+    """
+    return "meow" *n
+```
+
+Ce n'est pas spécifique à Python, mais plutôt une convention.
+Cela permet d'expliquer comment fonctionne son code.
