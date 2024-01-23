@@ -34,3 +34,8 @@ def ajouter():
 
 Cependant on préfèrera utiliser une classe, car l'argument self permet d'utiliser la variable dans toutes les méthodes (fonctions) de la classe.
 C'est plus élégant et moins le bazar
+
+## Constantes
+
+Le "système d'honneur" de Python fait qu'il n'y a pas de constante réelle assignée au langage.
+On nomme nos VARIABLES en MAJUSCULES pour indiquer aux lecteurs du code que cette variable doit rester constante.
