@@ -106,21 +106,35 @@ Argparse est une librarie qui permet de détecter des "command-line arguments" d
 
 Par exemple et par convention un nombre n sera passé au programme comme argument grâce à **"-n n"** ou **--number n**.
 
+On peut se passer de sys et de sys.argv[] grâce à cela
+
 ```python
 import argparse
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-n")
+#default donne une valeur par défaut à n si l'utilisateur ne tape pas -n n
+#type convertit automatiquement n en int
+parser.add_argument("-n", default = "1", type = int)
 args = parser.parse_args()
 ```
 
-On peut se passer de sys et de sys.argv[] grâce à cela
-
+Ce morceau de code permet d'itérer n fois
 ```python
-for _ in range(int(args.n)):
+for _ in range(args.n):
 ```
-
-Ce morceau de code permet d'itérer n fois, grâce à une commande de terminal de type 
+ grâce à une commande de terminal de type 
 ```shell
 python programme.py -n 3
 ```
+
+Si l'utilisateur ne parvient pas à utiliser le programme, il peut ajouter -h dans les arguments afin d'obtenir de l'aide. On peut donc ajouter des indices quand à la manière d'utiliser le programme.
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser(description = "Description du programme")
+parser.add_argument("-n", help = "ce à quoi correspond l'attribut -n")
+args = parser.parse_args()
+```
+
+## Unpacking
