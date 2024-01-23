@@ -1,2 +1,2 @@
 # perso
-Cours, notes et exercides
+Notes de cours et exercices
