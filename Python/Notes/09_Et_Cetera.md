@@ -35,6 +35,23 @@ def ajouter():
 Cependant on préfèrera utiliser une classe, car l'argument self permet d'utiliser la variable dans toutes les méthodes (fonctions) de la classe.
 C'est plus élégant et moins le bazar
 
+```python
+class Class:
+    def __init__(self):
+        self._variable = 0
+    
+    @property
+    def variable(self):
+        return self._variable
+    
+    def ajouter(self, n):
+        self._variable =+ n
+    
+    def retirer(self, n):
+        self._variable =- n
+```
+
+On pourra ensuite utiliser les fonctions ajouter() et retirer() librement sur la variable d'une instance de la classe, mais il nous sera impossible de modifier directement la valeur de la variable (i.e classe.variable = 1000), du fait de l'absence de setter.
 ## Constantes
 
 Le "système d'honneur" de Python fait qu'il n'y a pas de constante réelle assignée au langage.
