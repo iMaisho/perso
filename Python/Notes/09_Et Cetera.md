@@ -99,3 +99,28 @@ def meow(n: int):
 
 Ce n'est pas spécifique à Python, mais plutôt une convention.
 Cela permet d'expliquer comment fonctionne son code.
+
+## argparse
+
+Argparse est une librarie qui permet de détecter des "command-line arguments" dans la ligne de commande.
+
+Par exemple et par convention un nombre n sera passé au programme comme argument grâce à **"-n n"** ou **--number n**.
+
+```python
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument("-n")
+args = parser.parse_args()
+```
+
+On peut se passer de sys et de sys.argv[] grâce à cela
+
+```python
+for _ in range(int(args.n)):
+```
+
+Ce morceau de code permet d'itérer n fois, grâce à une commande de terminal de type 
+```shell
+python programme.py -n 3
+```
