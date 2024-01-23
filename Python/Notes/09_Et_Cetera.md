@@ -40,6 +40,7 @@ class Class:
     def __init__(self):
         self._variable = 0
     
+    # Getter
     @property
     def variable(self):
         return self._variable
