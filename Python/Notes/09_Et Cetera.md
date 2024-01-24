@@ -1,8 +1,10 @@
 # Et Cetera...
 
 ## Les Sets
-Un set est un espace qui permet de stocker des données à la manière d'une liste
-Il ne converve pas les doublons
+Un set est un espace qui permet de stocker des données à la manière d'une liste.
+
+Il ne converve pas les doublons.
+
 On peut lui faire les mêmes opérations que pour les listes, comme les trier avec sort()
 
 ```python
@@ -11,7 +13,9 @@ set = set()
 
 ## Variables globales
 Une variable initialisée en haut d'un fichier est lisible par toutes les fonctions, mais ne peut pas être modifiée
+
 Une variable initialisée dans une fonction peut être modifiée dans cette fonction, mais pas dans d'autres fonctions du programme
+
 On peut contourner ce problème en initialisant la variable dans le fichier, et en ajoutant le mot clef "global" dans chaque fonction
 
 ```python
@@ -33,6 +37,7 @@ def ajouter():
 ```
 
 Cependant on préfèrera utiliser une classe, car l'argument self permet d'utiliser la variable dans toutes les méthodes (fonctions) de la classe.
+
 C'est plus élégant et moins le bazar
 
 ```python
@@ -56,6 +61,7 @@ On pourra ensuite utiliser les fonctions ajouter() et retirer() librement sur la
 ## Constantes
 
 Le "système d'honneur" de Python fait qu'il n'y a pas de constante réelle assignée au langage.
+
 On nomme nos VARIABLES en MAJUSCULES pour indiquer aux lecteurs du code que cette variable doit rester constante.
 
 ## Type Hints
@@ -63,9 +69,8 @@ On nomme nos VARIABLES en MAJUSCULES pour indiquer aux lecteurs du code que cett
 https://docs.python.org/3/library/typing.html
 
 En python, lorsqu'on assigne une valeur à une variable, on est pas obligé de donner le type de valeur au programme.
-Ca peut être primordial pour d'autres langages.
 
-
+Cela peut être primordial pour d'autres langages.
 
 Le module mypy permet de vérifier que le programme fonctionne correctement, en vérifiant que les variables envoyées aux fonctions sont du bon type.
 
@@ -149,6 +154,7 @@ def total(galleons, sickles, knuts):
 ```
 
 Si on avait une liste qui contient les valeurs que l'on veut passer, et que l'on passait cette liste comme argument de la fonction, on passerait la liste comme premier argument de la fonction, et pas chacune des valeurs qu'elle contient.
+
 On peut donc l'unpack pour extraire chacune des valeurs grâce à la syntaxe suivante :
 
 ```python
@@ -164,6 +170,7 @@ total(*valeurs)
 
 
 Cette méthode ne fonctionne pas avec un set, car l'ordre des valeurs n'est pas conservé.
+
 La taille de la liste doit être égale au nombre d'arguments nécéssaires à la fonction.
 
 On peut par contre effectuer une opération similaire avec un dictionnaire, tant que les clefs correspondent aux noms des arguments de la fonction. On utilise cette fois un double astérisque pour extraire les valeurs du dictionnaire.
@@ -175,8 +182,8 @@ def total(galleons, sickles, knuts):
 valeurs = {"galleons": x, "sickles": y, "knuts": z}
 total(**valeurs)
 ```
-
-```python
+On obtient alors le resultat suivant :
+```shell
 **valeurs == "galleons=x, sickles=y, knuts=z"
 ```
 
