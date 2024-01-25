@@ -6,6 +6,5 @@ J'ai défini une fonction simple "combat", dans laquelle l'attaquant tape le dé
 
 J'ai récupéré le json officiel des données de riot, puis j'ai créé "get_champions.py" pour formatter ces données brutes comme je le souhaitais
 
-- Ajouter les sorts
-- Ajouter les items
+J'ai ajouté un système d'objets qui permettent d'améliorer les statistiques de nos personnages
 
