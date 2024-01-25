@@ -1,0 +1,9 @@
+Pour commencer j'ai implémenté la classe champions, et toutes les valeurs qui lui sont liées
+
+Puis j'ai créé les fonctions permettant de créer des instances de cette classe, grâce à un liste de dictionnaires courte créée à la main
+
+J'ai défini une fonction simple "combat", dans laquelle l'attaquant tape le défenseur jusqu'à ce qu'il meurt, et qui renvoie en combien de coups il est mort
+
+#TODO
+- Convertir le json officiel de données dans mon format
+- Ajouter les items

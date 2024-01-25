@@ -1,0 +1,4 @@
+[
+    {"name": "Rengar", "hp": 650, "hp+": 104, "ad": 68, "ad+": 3, "armor": 34, "armor+": 4.2, "mr": 32, "mr+": 2.05},
+    {"name": "Yuumi", "hp": 500, "hp+": 69, "ad": 49, "ad+": 3.1, "armor": 25, "armor+": 4.2, "mr": 25, "mr+": 1.1}
+]
