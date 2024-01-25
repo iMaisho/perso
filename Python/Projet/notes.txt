@@ -4,6 +4,8 @@ Puis j'ai créé les fonctions permettant de créer des instances de cette class
 
 J'ai défini une fonction simple "combat", dans laquelle l'attaquant tape le défenseur jusqu'à ce qu'il meurt, et qui renvoie en combien de coups il est mort
 
-#TODO
-- Convertir le json officiel de données dans mon format
+J'ai récupéré le json officiel des données de riot, puis j'ai créé "get_champions.py" pour formatter ces données brutes comme je le souhaitais
+
+- Ajouter les sorts
 - Ajouter les items
+
