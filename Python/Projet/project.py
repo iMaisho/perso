@@ -32,10 +32,7 @@ def create_champion():
                 lvl = champion_level()
                 items_number = number_item()
                 items = equip_items(items_number)
-                if items != []:
-                    items_hp, items_ad, items_armor = get_stats(items)
-                else:
-                    items_hp, items_ad, items_armor = 0, 0, 0
+                items_hp, items_ad, items_armor = get_stats(items)
                 return Champion(
                     name=champion["name"],
                     level=lvl,
@@ -100,14 +97,17 @@ def get_stats(items):
     hp = 0
     ad = 0
     armor = 0
-    for item in items:
-        if "hp" in item:
-            hp += item["hp"]
-        if "ad" in item:
-            ad += item["ad"]
-        if "armor" in item:
-            armor += item["armor"]
-    return hp, ad, armor
+    if items != []:
+        for item in items:
+            if "hp" in item:
+                hp += item["hp"]
+            if "ad" in item:
+                ad += item["ad"]
+            if "armor" in item:
+                armor += item["armor"]
+        return hp, ad, armor
+    else:
+        return hp, ad, armor
 
 
 def combat(a, d):

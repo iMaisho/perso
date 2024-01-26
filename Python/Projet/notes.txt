@@ -8,3 +8,6 @@ J'ai récupéré le json officiel des données de riot, puis j'ai créé "get_ch
 
 J'ai ajouté un système d'objets qui permettent d'améliorer les statistiques de nos personnages
 
+TODO : 
+-test_project.py
+- Rédiger README.md
