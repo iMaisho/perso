@@ -1,4 +1,3 @@
-import sys
 import time
 import json
 
@@ -91,7 +90,9 @@ def equip_items(n):
                     item_found = True
                     break
             else:
-                print("Cet objet n'existe pas.")
+                print(
+                    "Cet objet n'existe pas. | long sword : 10 AD, ruby crital : 150 hp, cloth armor : 10 armor"
+                )
     print(equipped)
     return equipped
 
