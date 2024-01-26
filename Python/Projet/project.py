@@ -24,63 +24,76 @@ def main():
 
 
 def create_champion():
-    champion_name = input("Entrez le nom de votre champion: ").title()
     with open("project_champions.json") as file:
         champions = json.load(file)
-    for champion in champions:
-        if champion["name"] == champion_name:
-            lvl = champion_level()
-            items = equip_item()
-            if items != []:
-                item_hp, item_ad, item_armor = get_stats(items)
-            else:
-                item_hp, item_ad, item_armor = 0, 0, 0
-            return Champion(
-                name=champion["name"],
-                level=lvl,
-                hp=champion["hp"] + (champion["hp+"] * lvl) + item_hp,
-                ad=champion["ad"] + (champion["ad+"] * lvl) + item_ad,
-                armor=champion["armor"] + (champion["armor+"] * lvl) + item_armor,
-                mr=champion["mr"] + (champion["mr+"] * lvl),
-            )
-    else:
-        sys.exit("Ce champion n'existe pas.")
+    while True:
+        champion_name = input("Entrez le nom de votre champion: ").title()
+        for champion in champions:
+            if champion["name"] == champion_name:
+                lvl = champion_level()
+                items_number = number_item()
+                items = equip_items(items_number)
+                if items != []:
+                    items_hp, items_ad, items_armor = get_stats(items)
+                else:
+                    items_hp, items_ad, items_armor = 0, 0, 0
+                return Champion(
+                    name=champion["name"],
+                    level=lvl,
+                    hp=champion["hp"] + (champion["hp+"] * lvl) + items_hp,
+                    ad=champion["ad"] + (champion["ad+"] * lvl) + items_ad,
+                    armor=champion["armor"] + (champion["armor+"] * lvl) + items_armor,
+                    mr=champion["mr"] + (champion["mr+"] * lvl),
+                )
+        else:
+            print("Ce champion n'existe pas.")
 
 
 def champion_level():
-    try:
-        lvl = int(input("Niveau du champion: "))
-        if 0 < lvl <= 18:
-            return lvl
-        else:
-            sys.exit("Niveau incorrect")
-    except ValueError:
-        sys.exit("Valeur incorrecte")
+    while True:
+        try:
+            lvl = int(input("Niveau du champion: "))
+            if 0 < lvl <= 18:
+                return lvl
+            else:
+                print("Niveau incorrect")
+        except ValueError:
+            print("Valeur incorrecte")
 
 
-def equip_item():
+def number_item():
+    while True:
+        try:
+            n = int(input("Nombre d'objets du champion: "))
+            if 0 <= n <= 6:
+                return n
+            else:
+                print("6 objets maximum")
+        except ValueError:
+            print("Valeur incorrecte")
+
+
+def equip_items(n):
     items = [
         {"name": "long sword", "ad": 10},
         {"name": "ruby cristal", "hp": 150},
         {"name": "cloth armor", "armor": 10},
     ]
-    equiped = []
-    try:
-        n = int(input("Nombre d'objets du champion: "))
-        if 0 <= n <= 6:
-            for _ in range(n):
-                item_name = input("Nom de l'objet: ").lower()
-                for item in items:
-                    if item_name == item["name"]:
-                        equiped.append(item)
-                        break
-                else:
-                    sys.exit("Cet objet n'existe pas.")
-            return equiped
-        else:
-            raise ValueError
-    except ValueError:
-        sys.exit("Valeur incorrecte")
+    equipped = []
+
+    for _ in range(n):
+        item_found = False
+        while not item_found:
+            item_name = input("Nom de l'objet: ").lower()
+            for item in items:
+                if item_name == item["name"]:
+                    equipped.append(item)
+                    item_found = True
+                    break
+            else:
+                print("Cet objet n'existe pas.")
+    print(equipped)
+    return equipped
 
 
 def get_stats(items):
