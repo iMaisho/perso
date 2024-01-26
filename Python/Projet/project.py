@@ -93,7 +93,6 @@ def equip_items(n):
                 print(
                     "Cet objet n'existe pas. | long sword : 10 AD, ruby crital : 150 hp, cloth armor : 10 armor"
                 )
-    print(equipped)
     return equipped
 
 

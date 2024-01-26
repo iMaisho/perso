@@ -1,0 +1,39 @@
+League of legends is a 5 versus 5 battle arena game, in which the goal is to destroy the enemy base.
+One of the best ways to reach that goal is to kill your enemies.
+
+My program is designed to answer a simple question : Given the state of the game, can you kill your enemy ?
+
+We're going to need to replicate some of the mecanics of the game, so let me introduce these first.
+
+Each player chooses a champion at the start of the game. There are over 160 champions to choose from today, 
+each with their own set of abilities, passives and role.
+All champions have the same set of stats, which can be improved by buying items in the shop.
+There are over 100 items, some with just raw stats, some with passive or active abilities.
+
+This really is a lot to consider, so we will just focus on some basic form of damage champions can deal, and the stats that are meaningful to this damage.
+
+I first started by creating a Champion class, with said stats as well as a simple list of dictionnaries.
+The goal was to create two instances of champions, both with stats corresponding to the list.
+
+I then implemented a simple combat function, 
+that used some league of legends math to calculate the damage being dealt
+
+Once that was done, i needed to scrap some data from the League of Legends developpers 
+to create a list of dictionnaries containing all the up to date informations about the champions
+
+To reach that goal, i created a simple program that allowed me to scrap and reformat the data I found on the web,
+in this json file
+
+Et voilà ! I now have a json file in a format that my program understands, 
+and I can  play as any of league's champions
+
+Despite the complexity of the items system, i still wanted to implement a few basic items, as a proof of concept
+This let me figure out how let the player create a list of objects with some constrains, and add the item stats
+to the champion's 
+
+There are some obvious topics that this program could be improved upon
+but I'm really glad of what I achieved, having started programming just a few weeks back
+
+I would gladly take any feedback about my project, i hope you enjoyed discovering it as much as i enjoyed creating it
+
+Let's now see the program in action !
