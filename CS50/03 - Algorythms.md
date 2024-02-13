@@ -118,7 +118,7 @@ typedef struct
 On peut ensuite créer nos personnes grâce à cette syntaxe :
 
 ```c
-person persons[n];
+person people[n];
 
 people[0].name = "Antonin"
 people[0].number = "06 00 00 00 00"
