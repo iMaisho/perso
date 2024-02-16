@@ -434,3 +434,114 @@ Il est très difficile en C d'obtenir l'input d'un utilisateur de manière sécu
 
 Néanmoins, essayons de comprendre comment les fonctions get_int et get_string incluses dans <cs50.h> fonctionnent.
 
+Pour un type de données contenu dans une quantité fixe de mémoire, c'est assez simple car lorsque l'on crée la variable, la mémoire nécessaire est automatiquement allouée. On utilise scanf pour chercher un type de donnée dans notre input, et on la stocke à l'adresse de notre variable.
+
+Le code pour get_int ressemble donc à ça : 
+
+```c
+#include <stdio.h>
+
+int main(void)
+{
+    int x;
+    printf("x: ");
+    scanf("%i", &x);
+    printf("x: %i\n", x);
+}
+```
+
+Pour get_string, c'est plus compliqué. Il va falloir allouer de la mémoire manuellement grâce à malloc, mais ne connaissant pas la taille de la chaîne, il est très probable que l'on touche à des données auxquelles on ne devrait pas toucher : Segmentation fault
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+
+int main(void)
+{
+    char *s = malloc(4);
+    if (s == NULL)
+    {
+        return 1;
+    }
+    printf("s: ");
+    scanf("%s", s);
+    printf("s: %s\n", s);
+    free(s);
+    return 0;
+}
+```
+
+Notez que dans scanf, on passe bien s et non pas &s, car pour une string (ou char *), c'est bien l'adresse du premier caractère de la chaîne qui est stocké dans s.
+
+get_string est conçue pour allouer de plus en plus de mémoire en avançant dans la chaîne de caractère petit à petit.
+
+### File I/O
+
+```shell
+fopen
+fclose
+fprintf
+fscanf
+fread
+fwrite
+fseek
+...
+```
+
+Exemple de programme pour remplir un carnet de numéros de téléphone :
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <string.h>
+
+int main(void)
+{
+    FILE *file = fopen("phonebook.csv", "a");
+    if (!file)
+    {
+        return 1;
+    }
+
+    char *name = get_string("Name: ");
+    char *number = get_string("Number: ");
+
+    fprintf(file, "%s,%s\n", name, number);
+
+    fclose(file);
+}
+```
+
+Voici un exemple de programme qui copie un fichier, byte par byte :
+
+```c
+#include <stdio.h>
+#include <stdint.h>
+
+// Permet de "renommer" un data-type
+typedef uint8_t BYTE;
+
+int main(int argc, char *argv[])
+{
+    // rb et wb signifient "read/write binary"
+    FILE *src = fopen(argv[1], "rb");
+    FILE *dst = fopen(argv[2], "wb");
+
+    BYTE b;
+
+    // Stocker temporairement le contenu d'un byte pour le copier dans le nouveau fichier
+    // (adresse du byte, taille, nombre, fichier)
+    while (fread(&b, sizeof(b), 1, src) !=0)
+    {
+        fwrite(&b, sizeof(b), 1, dst);
+    }
+
+    fclose(dst);
+    fclose(src);
+}
+```
+
+### Bitmaps
+
+Un type de fichier (.bmp) qui implémente une image comme une grille de coordonnées x et y.
+Cela nous permettra de réaliser des traitements sur des images.
