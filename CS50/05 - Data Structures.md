@@ -88,3 +88,5 @@ typedef struct node
 ```
 
 La dernière liste permet de renommer "struct node" en "node" pour pouvoir l'écrire plus simplement dans le reste du code.
+
+Blablabla

@@ -246,6 +246,7 @@ Merge va comparer les deux premiers éléments de chaque moitié, et prendre le 
 
 ![Alt text](https://miro.medium.com/v2/resize:fit:720/format:webp/1*D-cvYWgrOnHwm6Xg8INzFg.gif)
 
+
 *représentation graphique de merge sort*
 
 Merge sort est significativement plus rapide que les autres algorithmes de tri, car il effectue n(logn) opérations.
