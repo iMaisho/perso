@@ -88,3 +88,248 @@ typedef struct node
 ```
 
 La dernière liste permet de renommer "struct node" en "node" pour pouvoir l'écrire plus simplement dans le reste du code.
+
+![Alt text](https://github.com/iMaisho/perso/blob/main/Ressources/Gifs/Linked%20Lists.gif?raw=true)
+*Représentation pas à pas de l'implémentation d'une liste liée*
+
+Note : La flèche -> permet de simplifier la syntaxe. Elle symbolise la flèche qui va du pointeur vers l'élément de la structure (ici un node) dont on veut changer la valeur.
+
+```c
+pointeur->nombre
+// équivaut à
+(*pointeur).nombre
+```            
+
+Qu'est ce que ça donne en code ?
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int number;
+    struct node *next;
+}
+node;
+
+int main(int argc, char *argv[])
+{
+    // Memory for numbers
+    node *list = NULL;
+
+    // For each command-line argument
+    for (int i = 1; i < argc; i++)
+    {
+        // Convert argument to int
+        int number = atoi(argv[i]);
+
+        // Allocate node for number
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return 1;
+        }
+        n->number = number;
+        n->next = NULL;
+
+        // Prepend node to list
+        n->next = list;
+        list = n;
+    }
+
+    // Print numbers
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->number);
+    }
+
+    // Free memory
+    node *ptr = list;
+    while (ptr != NULL)
+    {
+        node *next = ptr->next;
+        free(ptr);
+        ptr = next;
+    }
+}
+```
+### Prepending list
+La liste liée implémentée plus haut ajoute chaque nouvel élément au début de la liste. Ainsi un input de "1 2 3" créera une liste liée "3 2 1". 
+
+C'est un algorithme d'ordre O(1), car peu importe la taille de la liste, ajouter un élément nous prendra un nombre fini déterminé d'étapes.
+
+En revanche, rechercher une valeur dans cette liste liée utilisera un algorithme d'ordre O(n), car nous serons forcé de commencer au début de la liste pour pouvoir la parcourir. Il est donc impossible d'utiliser le Binary search (O(logn)) sur une liste liée (cf. 03 - Algorythms).
+
+Les listes liées nous permettent d'éviter les problèmes des arrays liés à la mémoire en créant des listes dynamiques dont la taille change en fonction de nos besoins, mais cela a un coût en temps lorsque l'on doit chercher dans ces listes.
+
+### Appending list
+
+On peut modifier notre code pour faire en sorte que nos nouveaux éléments se retrouvent à la fin de la liste liée.
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int number;
+    struct node *next;
+}
+node;
+
+int main(int argc, char *argv[])
+{
+    // Memory for numbers
+    node *list = NULL;
+
+    // For each command-line argument
+    for (int i = 1; i < argc; i++)
+    {
+        // Convert argument to int
+        int number = atoi(argv[i]);
+
+        // Allocate node for number
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return 1;
+        }
+        n->number = number;
+        n->next = NULL;
+
+        // If list is empty
+        if (list == NULL)
+        {
+            // This node is the whole list
+            list = n;
+        }
+
+        // If list has numbers already
+        else
+        {
+            // Iterate over nodes in list
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                // If at end of list
+                if (ptr->next == NULL)
+                {
+                    // Append node
+                    ptr->next = n;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Print numbers
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->number);
+    }
+
+    // Free memory
+    node *ptr = list;
+    while (ptr != NULL)
+    {
+        node *next = ptr->next;
+        free(ptr);
+        ptr = next;
+    }
+}
+```
+
+Cette nouvelle version sacrifie du temps à l'insertion de chaque élément, car on doit se rendre à la fin de la liste liée à chaque nouvel élement. Cet algorithme est d'ordre O(n).
+
+### Sorted List
+
+```c
+#include <cs50.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct node
+{
+    int number;
+    struct node *next;
+}
+node;
+
+int main(int argc, char *argv[])
+{
+    // Memory for numbers
+    node *list = NULL;
+
+    // For each command-line argument
+    for (int i = 1; i < argc; i++)
+    {
+        // Convert argument to int
+        int number = atoi(argv[i]);
+
+        // Allocate node for number
+        node *n = malloc(sizeof(node));
+        if (n == NULL)
+        {
+            return 1;
+        }
+        n->number = number;
+        n->next = NULL;
+
+        // If list is empty
+        if (list == NULL)
+        {
+            list = n;
+        }
+
+        // If number belongs at beginning of list
+        else if (n->number < list->number)
+        {
+            n->next = list;
+            list = n; 
+        }
+
+        // If number belongs later in list
+        else
+        {
+            // Iterate over nodes in list
+            for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+            {
+                // If at end of list
+                if (ptr->next == NULL)
+                {
+                    // Append node
+                    ptr->next = n;
+                    break;
+                }
+
+                // If in middle of list
+                if (n->number < ptr->next->number)
+                {
+                    n->next = ptr->next;
+                    ptr->next = n;
+                    break;
+                }
+            }
+        }
+    }
+
+    // Print numbers
+    for (node *ptr = list; ptr != NULL; ptr = ptr->next)
+    {
+        printf("%i\n", ptr->number);
+    }
+
+    // Free memory
+    node *ptr = list;
+    while (ptr != NULL)
+    {
+        node *next = ptr->next;
+        free(ptr);
+        ptr = next;
+    }
+}
+```
+
+Cet algorithme est aussi d'ordre O(n), car si le nombre est plus grand que tous les éléments de la liste il faudra la parcourir en entier pour le placer à la fin.

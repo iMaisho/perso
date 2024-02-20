@@ -244,7 +244,7 @@ Else
 
 Merge va comparer les deux premiers éléments de chaque moitié, et prendre le plus petit, encore et encore jusqu'à ce que les deux moitiées aient été combinées. Elles ont gardé leur ordre.
 
-![Alt text](https://miro.medium.com/v2/resize:fit:720/format:webp/1*D-cvYWgrOnHwm6Xg8INzFg.gif)
+![Alt text](https://github.com/iMaisho/perso/blob/main/Ressources/Gifs/Merge%20Sort.gif?raw=true)
 
 
 *représentation graphique de merge sort*
