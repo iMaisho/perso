@@ -471,6 +471,9 @@ Vu que chaque élément diffère, chaque élément aura tracé son propre chemin
 
 Comme la majorité des arrays contiennent des valeurs "NULL" lorsqu'ils ne sont pas utilisés, on doit indiquer avec une valeur spéciale la fin d'un mot.
 
+![AltText](https://github.com/iMaisho/perso/blob/main/Ressources/Images/Tries.png?raw=true)
+*représentation graphique d'un try qui contiendrait Tom, Toad et Toadette*
+
 En code ça donnerai :
 
 ```c
@@ -481,4 +484,8 @@ typedef struct node
 } node;
 ```
 
-Rechercher un élément dans cette structure est d'ordre O(1).
+Le contenu de "number" est l'équivalent des boites vertes sur le schéma ci-dessus. Sa valeur sera "NULL" pour toutes les boites blanches, et sa valeur sera le numéro associé au nom pour les boites vertes.
+
+Insérer, supprimer ou rechercher un élément dans cette structure est d'ordre O(1), car peu importe le nombre d'éléments dans le trie, cela prendra une constante k étapes pour trouver une personne, correspondant au nombre de lettres dans le nom de la personne.
+
+Cependant, cela utilise énormément de mémoire, représentée par toutes les boites noires du graphique ci-dessus.
