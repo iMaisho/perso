@@ -1,8 +1,8 @@
 # Data Structures
 
-### Abstract Data Types
+## Abstract Data Types
 
-#### Queues
+### Queues
 
 FIFO = First In First Out
 
@@ -22,7 +22,7 @@ queue;
 
 Cette structure a une capacité finie de 50 personnes en même temps dans la queue, et size nous permet de savoir combien de personnes sont déjà dedans (donc combien on peut encore ajouter)
 
-#### Stacks
+### Stacks
 
 LIFO = Last In First Out
 
@@ -65,7 +65,7 @@ On appelle les éléments de la liste la data (ou les données), et les pointeur
 
 Le bloc formée par les données et la metadata s'appelle un node.
 
-On peut définir sa structure en C comme cela : 
+On peut définir sa structure en C comme cela :
 
 ```c
 typedef struct
@@ -98,7 +98,7 @@ Note : La flèche -> permet de simplifier la syntaxe. Elle symbolise la flèche 
 pointeur->nombre
 // équivaut à
 (*pointeur).nombre
-```            
+```
 
 Qu'est ce que ça donne en code ?
 
@@ -158,7 +158,7 @@ int main(int argc, char *argv[])
 
 ### Prepending list
 
-La liste liée implémentée plus haut ajoute chaque nouvel élément au début de la liste. Ainsi un input de "1 2 3" créera une liste liée "3 2 1". 
+La liste liée implémentée plus haut ajoute chaque nouvel élément au début de la liste. Ainsi un input de "1 2 3" créera une liste liée "3 2 1".
 
 C'est un algorithme d'ordre O(1), car peu importe la taille de la liste, ajouter un élément nous prendra un nombre fini déterminé d'étapes.
 
@@ -439,7 +439,7 @@ Le hashing est donc l'idée générale de prendre un input, et de lui associer u
 
 Lorsque l'on passe l'input "Mario" dans la fonction de hashage définie plus tôt, on obtient 12 (car M est la 13ème lettre de l'alphabet).
 
-En code cette fonction pourra être implémentée comme ceci : 
+En code cette fonction pourra être implémentée comme ceci :
 
 ```c
 // Pour avoir accès à toupper()
