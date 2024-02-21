@@ -155,7 +155,9 @@ int main(int argc, char *argv[])
     }
 }
 ```
+
 ### Prepending list
+
 La liste liée implémentée plus haut ajoute chaque nouvel élément au début de la liste. Ainsi un input de "1 2 3" créera une liste liée "3 2 1". 
 
 C'est un algorithme d'ordre O(1), car peu importe la taille de la liste, ajouter un élément nous prendra un nombre fini déterminé d'étapes.
@@ -333,3 +335,18 @@ int main(int argc, char *argv[])
 ```
 
 Cet algorithme est aussi d'ordre O(n), car si le nombre est plus grand que tous les éléments de la liste il faudra la parcourir en entier pour le placer à la fin.
+
+### Trees
+
+Comme on l'a vu plus tôt, il y a des avantages et des inconvénients en termes de mémoire et de temps d'éxecution à utiliser des linked lists plutôt que des arrays, et vice-versa. C'est difficile de déterminer un vrai gagnant.
+
+Et si on combinait le meilleur des deux mondes ?
+
+Imaginons un array de taille 7 (bien pratique car possède des milieus bien définis à chaque fois qu'on veut le séparer en deux moitiées égales.)
+
+La valeur 4 sera la racine de l'arbre, et sera liée à deux pointeurs, un à gauche et un à droite, qui pointeront vers 2 et 6, qui sont les milieus des deux moitiées restantes.
+
+Ces deux valeurs seront liées à des pointeurs vers leurs enfants respectifs (1 et 3 pour 2, 5 et 7 pour 6).
+
+On crée ce genre d'arbre généalogique jusqu'au "feuilles", qui sont les nodes qui n'ont plus d'enfants.
+
