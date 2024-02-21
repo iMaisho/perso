@@ -350,3 +350,135 @@ Ces deux valeurs seront liées à des pointeurs vers leurs enfants respectifs (1
 
 On crée ce genre d'arbre généalogique jusqu'au "feuilles", qui sont les nodes qui n'ont plus d'enfants.
 
+![AltText](https://github.com/iMaisho/perso/blob/main/Ressources/Images/Binary%20Search%20Tree.png?raw=true)
+
+On peut implémenter cette structure grâce ce bout de code :
+
+```c
+typedef struct node
+{
+    int number;
+    struct node *left;
+    struct node *right;
+} node;
+```
+
+Comme l'arbre est "trié" et que toutes les valeurs sont croissantes en parcourant l'arbre de gauche à droite, on peut chercher dans l'arbre en partant de la racine, en comparant la valeur que l'on cherche avec la valeur du node et en partant à gauche ou à droite en conséquence.
+
+C'est un algorithme de recherche d'ordre O(logn), car le nombre d'étapes max est la hauteur de l'arbre.
+
+Imaginons que nous cherchions à savoir si la valeur que l'on cherche est présente dans l'arbre :
+
+```c
+bool search(node *tree, int number)
+{
+    if (tree == NULL)
+    {
+        return false;
+    }
+    else if (number < tree->number)
+    {
+        return search(tree->left, number)
+    }
+    else if (number > tree->number)
+    {
+        return search(tree->right, number)
+    }
+    else
+    {
+        return true
+    }
+}
+```
+
+Une nuance à apporter dépend de l'ordre dans lequel on ajoute les valeurs à l'arbre. Si on ajoute nos valeurs dans un ordre croissant, nous obtiendrons une linked list déguisée, car on aura créé que des nodes vers la droite.
+
+On peut régler ce problème en ajoutant des étapes à la création des nodes, pour créer un arbre équilibré.
+
+Dans le cas où on crée des nodes de valeurs 1 puis 2 puis 3, il faudrait faire en sorte que la racine de l'arbre devienne 2 pour que l'arbre soit équilibré.
+
+### Dictionaries
+
+Comme en python, keys and values.
+
+On ne verra pas ici comment les implémenter en C.
+
+### Hashing
+
+Imaginons qu'on souhaite réaliser une liste de contacts.
+On peut combiner les arrays et les linked lists pour garder le meilleur des deux mondes.
+
+L'idée serait d'avoir un array[26], dont chacun des éléments correspond théoriquement à une lettre de l'alphabet.
+
+A chaque fois que l'on souhaiterai ajouter un élément à cette hash table, on choisirai l'élément de l'array correspondant à la première lettre du nom de l'élément, et on lierai les deux éléments. L'array contiendra donc le pointeur vers l'élément, qui serait un node à part, et ainsi de suite à chaque fois qu'on ajoute un élément avec une même lettre de départ.
+
+On obtient donc un array de linked lists.
+
+Dans le meilleur des cas, cet algorithme est d'ordre O(1), mais si tous les contacts commencent par la même lettre alors on se retrouve avec une simple linked list d'ordre O(n).
+
+On peut essayer de résoudre ce problème en créant un array qui ne classe pas par la première lettre mais par les 3 premières par exemple, ce qui rends très improbable que tout le monde soit lié, mais c'est au sacrifice de la mémoire, car ça fait pow(26, 3) combinaisons possible, donc on est obligés de créer un array[17576].
+
+Pour le premier exemple, chaque node serait défini ainsi :
+
+```c
+typedef struct node
+{
+    char *name;
+    char *number;
+    struct node *next;
+} node;
+```
+
+Et la hash table serait définie ainsi :
+
+```c
+node *table[26];
+```
+
+Le hashing est donc l'idée générale de prendre un input, et de lui associer une valeur en fonction de cet input.
+
+Lorsque l'on passe l'input "Mario" dans la fonction de hashage définie plus tôt, on obtient 12 (car M est la 13ème lettre de l'alphabet).
+
+En code cette fonction pourra être implémentée comme ceci : 
+
+```c
+// Pour avoir accès à toupper()
+#include <ctype.h>
+
+// On ajoute unsigned pour éviter les valeurs négatives
+// On ajoute const pour éviter que la valeur du mot soit modifiée
+unsigned int hash(const char *word)
+{   
+    // On met la lettre en majuscule, et on en soustrait la valeur unicode du A majuscule pour obtenir une valeur entre 0 et 25.
+    return toupper(word[0]) - "A";
+}
+
+```
+
+#### Différence entre la théorie et la pratique
+
+Cet algorithme est de l'odre de O(n), car théoriquement si tous nos contacts ont le même output après avoir été hashé, on obtient une linked list de n éléments.
+
+Mais dans la réalité, on se rend bien compte que c'est très improbable. En réalité on pourrait définir la fonction avec les termes O(n/26), dans le cas où tous les noms sont équitablement répartis. C'est quand même 26 fois plus rapide de rechercher un élément dans une hash table que dans une linked list. Donc ça reste utile dans le monde réel, même si l'ordre de grandeur reste le même.
+
+### Tries
+
+Un try est un tree of arrays.
+
+Un exemple classique est d'utiliser des array[25] pour chaque lettre de l'alphabet, et de hash chaque lettre une à une pour se diriger vers les feuilles.
+
+Vu que chaque élément diffère, chaque élément aura tracé son propre chemin, de lettre en lettre, au travers le l'arbre.
+
+Comme la majorité des arrays contiennent des valeurs "NULL" lorsqu'ils ne sont pas utilisés, on doit indiquer avec une valeur spéciale la fin d'un mot.
+
+En code ça donnerai :
+
+```c
+typedef struct node
+{
+    struct node *children[26];
+    char *number;
+} node;
+```
+
+Rechercher un élément dans cette structure est d'ordre O(1).
