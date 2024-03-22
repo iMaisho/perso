@@ -314,4 +314,225 @@ On pourrait penser qu'on a la même problématique, avec l'ID du show qui se ré
 
 De plus cela permet d'avoir encore plus de données liées les unes aux autres.
 
+![Alt](https://github.com/iMaisho/perso/blob/main/Ressources/Images/IMDb%20Structure.png?raw=true)
+*la structure des bases de données d'IMDb*
 
+### One to One
+
+Si on analyse le lien entre **ratings** et **shows**, la flèche nous indique qu'on est dans une relation "un pour un", c'est à dire qu'un show aura un seul rating.
+
+On pourrait théoriquement les mettre dans la même database sans poser de problème, mais IMDb a fait le choix de les garder séparés.
+
+#### Datatypes
+
+Dans sqlite, si on utilise la fonction .schema sur une base de données, on obtient les noms des colonnes, et le type de données qu'elles peuvent contenir.  
+
+- BLOB = Binary Large Object
+- INTEGER
+- NUMERIC = Dates, Time
+- REAL = Float
+- TEXT
+
+Les autres programmes basés sur SQL (Oracle, MySQL, ...) utilisent des fonctions différentes et ont des noms différents pour ces types de données, mais fonctionnent sur la même idée générale.
+
+Il y a d'autres mots clefs qui peuvent être ajoutés à ces datatypes :
+
+- NOT NULL = Pour être sûr que ce champ est rempli avant de l'intégrer à la base de données
+- UNIQUE
+
+#### Primary Key and Foreign Key 
+
+Quand on donne un ID à une donnée dans un tableau, c'est une primary key car c'est là qu'elle est créée/attribuée.
+
+Quand on référence cet ID dans un autre tableau, c'est une Foreign Key car on l'utilise pour faire le lien avec les primary keys des tableaux originaux.
+
+On peut voir ces différences en utilisant .schema :
+
+```console
+sqlite> .schema shows$
+CREATE TABLE shows (
+    id INTERGER,
+    title TEXT NOT NULL,
+    year NUMERIC,
+    episodes INTEGER,
+    PRIMARY KEY(id)
+);
+
+sqlite> .schema ratings
+CREATE TABLE ratings(
+    show_id INTEGER NOT NULL,
+    rating REAL NOT NULL,
+    votes INTEGER NOT NULL,
+    FOREIGN KEY(show_id) REFERENCES shows(id)
+)
+```
+#### Nested Queries
+
+Imaginons qu'on aimerait voir les shows qui ont un rating supérieur à 8.
+
+```console
+SELECT show_id FROM ratings WHERE rating >= 8.0;
+```
+
+Cette commande nous affichera tous les ID que l'on recherche. Seulement, ce n'est pas très utile car on obtient une liste de nombres cryptiques, et si on doit rechercher ces nombres un par un dans le tableau "show", on aura pas gagné beaucoup de temps.
+
+On peut donc faire une recherche imbriquée, où la recherche entre parenthèse sera résolue en premier : 
+
+```console
+SELECT title FROM shows WHERE id IN (SELECT show_id FROM ratings WHERE rating >= 8.0);
+```
+
+On va donc obtenir la liste des ID des shows avec une note de 8 ou plus, puis on va aller chercher les noms des shows dans shows qui correspondent à ces ID.
+
+Cependant, on ne verra que les titres des shows, et pas leur note, ce qu'on pourrait vouloir voir pour séléctionner plus précisément ce qu'on aimerait voir. Pour cela on utilise un nouveau mot clé : **JOIN**
+
+```console
+sqlite> SELECT title, rating FROM shows JOIN ratings ON shows.id = ratings.show_id WHERE rating >= 8.0 LIMIT 10;
+```
+
+### One to Many
+
+![Alt](https://github.com/iMaisho/perso/blob/main/Ressources/Images/IMDb%20Structure.png?raw=true)
+*la structure des bases de données d'IMDb*
+
+Si on analyse le lien entre shows et genres, on peut voir que la flèche est différente. Cela est dû au fait qu'un seul show peut avoir plusieurs genres.
+
+Lorsque l'on veut JOIN deux tableaux dans une relation one to many, le résultat affiché dupliquera le nom du show sur chaque ligne du nouveau tableau.
+
+Ce n'est pas grave, car les copies ne sont pas stockées dans la mémoire, simplement dans ce nouveau tableau éphémère qui est seulement là pour qu'on l'observe avec nos yeux. 
+
+### Many to many
+
+Un acteur peut jouer dans plusieurs shows, et un show peut accueillir plusieurs acteurs.
+
+On doit donc créer un 3ème tableau : stars qui permet de faire le lien entre le tableau people et le tableau shows.
+
+Rechercher des données liées par les deux tableaux est un peu plus compliqué :
+
+```console 
+sqlite> SELECT * FROM shows WHERE title = 'The Office' AND year = 2005;
+```
+Cette ligne nous permet de trouver la série que l'on cherche, ici The Office
+
+```console 
+sqlite> SELECT person_id FROM stars WHERE show_id = 
+        (SELECT id FROM shows WHERE title = 'The Office' AND year = 2005);
+```
+
+Cette ligne nous permet de trouver les ID des acteurs de la série
+
+```console 
+sqlite> SELECT name FROM people WHERE id IN 
+        (SELECT person_id FROM stars WHERE show_id = 
+        (SELECT id FROM shows WHERE title = 'The Office' AND year = 2005));
+```
+Cette ligne nous permet de trouver les noms liés à ces ID.
+
+On peut également JOIN ces différents tableaux pour accéder à certaines informations. Imaginons que nous souhaitons trouver tous les shows dans lesquels Steve Carell a joué. Il y a plusieurs façon d'arriver à ce résultat : 
+
+```console 
+sqlite> SELECT title FROM shows WHERE id IN 
+        (SELECT show_id FROM stars WHERE person_id = 
+        (SELECT id FROM people WHERE name = 'Steve Carell'));
+```
+Ici, c'est la même logique qu'au dessus : On va chercher l'ID de Steve Carell, puis chercher dans stars à quels show_id ce person_id est associé, puis chercher dans shows quels titres sont associés à ces show_id. C'est la méthode la plus rapide
+
+```console 
+sqlite> SELECT title FROM shows
+        JOIN stars ON shows.id = stars.show_id
+        JOIN people ON stars.person_id = people.id
+        WHERE name = 'Steve Carell';
+```
+
+Ici, on lie les 3 tableaux en alignant "shows.id" avec "stars.show_id" et "stars.person_id" avec "people.id", puis on va chercher dans ce grand tableau les titres des shows pour lesquels le nom de l'acteur Steve Carell apparait.
+
+```console 
+sqlite> SELECT title GROM shows, stars, people
+        WHERE shows.id = stars.show_id
+        AND people.id = stars.person_id
+        AND name = 'Steve Carell'
+```
+
+Un peu similaire, mais au lieu de lier les 3 tableaux avec JOIN, on va directement chercher dans les 3 tableaux
+
+Ces deux dernières méthodes sont beaucoup plus lente à utiliser, mais on a une méthode pour régler ce problème.
+
+### Index
+
+Lorsqu'on sait qu'une catégorie va souvent être recherchée par les utilisateurs, il peut être malin de créer un INDEX pour cette catégorie. Cela prends un peu de temps, mais on a besoin de ne le faire qu'une fois (sauf quand on met à jour sa base de données).
+
+Au lieu d'utiliser le linear search, l'indexation va créer un B-Tree qui est un arbre dont chaque node a beaucoup d'enfants, et qui est donc très court.
+
+
+Cette structure va permettre de réduire le temps de recherche, au prix de mémoire. Cela rendra également plus lentes les modifications de la base de données, car il faudra modifier les indexs en même temps pour éviter de casser les arbres. Il faut donc les utiliser intelligemment.
+
+Par défaut, les Primary Keys sont indexées, mais ce n'est pas le cas pour les Foreign Keys et les autres datatypes.
+
+La syntaxe est la suivante : 
+
+```console 
+sqlite> CREATE INDEX index_name ON table_name (collumn_name);
+```
+Par exemple, pour les titres des shows :
+
+```console 
+sqlite> CREATE INDEX title_index ON shows (title);
+```
+
+## SQL dans python
+
+cs50.readthedocs.io/libraries/cs50/python/#cs50.SQL 
+
+La vraie force des langages spécialisés, c'est qu'on peut y faire appel dans des programmes codés dans des langages différents.
+
+Le syntaxe native pour utiliser SQL dans Python étant un peu compliquée, CS50 vient avec son propre module SQL.
+
+En reprenant notre exemple de départ, la base de données où les élèves ont donné leur langage préféré ainsi que leur exercice préféré, voilà comment on pourrait récupérer le nombre d'élève ayant voté pour le langage que l'utilisateur input : 
+
+```python
+from cs50 import SQL
+
+# db = database, on pourrait lui donner un autre nom
+# sqlite:///dabatase_name <- 3 slashes
+db = SQL("sqlite:///favorites.db")
+
+favorite = input("Favorite: ")
+
+# ? fait office de placeholder pour la variable favorite
+rows = db.execute("SELECT COUNT(*) AS n FROM favorites WHERE problem = ?", favorite)
+row = rows[0]
+
+print(row["n"])
+```
+
+## Race conditions
+
+Imaginons que ma chérie et moi aimons beaucoup le lait. J'ouvre le frigo, me rends compte qu'il n'y a plus de lait, et décide d'aller en acheter. Ma chérie ouvre le frigo;, voit qu'il n'y a plus de lait et décide également d'aller en acheter.
+
+Quand nous rentrons des courses, nous avons 2x trop de lait, parce qu'alors que la valeur du lait était en train d'être incrémentée quand je suis parti faire les courses, une autre personne a demandé à voir la valeur actuelle.
+
+Cette analogie représente ce qui peut arriver lorsque beaucoup d'utilisateurs envoient beaucoup de requêtes à beaucoup de serveur, comme des likes sur Instagram.
+
+Si beaucoup d'utilisateurs envoient des likes en même temps, il se pourrait que la valeur des likes actuels ne soient pas encore à jour quand on l'incrémente, donc on perd des likes au passage.
+
+Ex : 
+- 0 likes actuellement, 
+- Je like, elle like.
+- Je récupère la valeur 0
+- Elle récupère la valeur 0
+- J'incrémente, elle incrémente
+- Je renvoie la valeur 1 au serveur
+- Elle renvoie la valeur 1 au serveur
+- Résultat : 1 like sur le post au lieu de 2
+
+Il y a des solutions à ces problèmes : 
+
+- BEGIN TRANSACTION / COMMIT: Fait en sorte que toutes les lignes de code s'exécutent ensemble, ou ne s'exécutent pas
+
+- ROLLBACK
+
+## SQL Injection Attack
+
+ Il est important d'utiliser la syntaxe avec les placeholders "?" afin de s'assurer de ne pas risquer une attaque par injection.
+
+ Par exemple, sur un formulaire de connexion, on pourrait avoir une faille qui permettrait de faire de la partie du code qui demande le password un commentaire, bypassant totalement la sécurité du site, et permettant de se connecter seulement avec l'identifiant de connexion.
