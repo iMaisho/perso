@@ -1,0 +1,323 @@
+body{
+  display: block;
+  font-family: League Spartan;
+  color: #faf5ff;
+  margin: 0;
+  background-color: #000303;
+}
+
+  /* header mobile */
+header {
+  height: 150px; 
+  background-color: #000303;
+  position: fixed;
+  top: 0;
+  left:0;
+  width: 100%;
+  transition: all 1s;
+  font-family: League Spartan;
+  z-index: 999;
+}
+
+.logo{
+  position: absolute;
+  top:12px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.logo img{
+  width: 136px;
+  margin-top: 15px;
+}
+
+.logoIcon{
+  display: none;
+}
+
+.burgerMenu{
+  display: block;
+  position: absolute;
+  padding: 0;
+  width: 50px;
+  height: 50px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  top: 50px;
+  right: 5%;
+}
+
+.burgerBar{
+  display: block;
+  width: 50px;
+  height: 6px;
+  background-color: #D9992E;
+  border-radius: 5px;
+  transition: all 0.5s ease-in-out; 
+}
+
+.burgerBar::before, .burgerBar::after{
+  content:"";
+  position: absolute;
+  left:0;
+  width: 50px;
+  height: 6px;
+  background-color: #faf5ff;
+  border-radius: 3px;
+  transition: all 0.5s ease-in-out;
+}
+
+.burgerBar::before{
+  transform: translateY(-15px);
+}
+
+.burgerBar::after{
+  transform: translateY(15px);
+}
+
+
+.menu {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  position: absolute;
+  top: 150px ;
+  width: 0%;
+  right: -100px;
+  background: #000303;
+  transition: all 0.8s ease-in-out;
+}
+
+.menu div{
+  display: block;
+  padding: 20px;
+  font-size: 10vw;
+  border-bottom: 1px #faf5ff solid;
+  border-collapse: collapse;
+  padding-left: clamp(50px,10%,300px);
+  padding-top: 30px;
+  white-space: nowrap;
+}
+
+.menu .first{
+  border-top: 1px #faf5ff solid;
+}
+
+.menu a{
+  text-decoration: none;
+  color: #faf5ff;
+  margin: auto;
+}
+
+.showNav .menu{
+  width: 100%;
+  right: 0;
+}
+
+.showNav .burgerBar{
+  width: 0;
+  background: transparent;
+}
+
+.showNav .burgerBar::before {
+  transform:rotate(45deg);
+}
+.showNav .burgerBar::after {
+  transform:rotate(-45deg);
+}
+
+  /* fin header mobile */
+
+@media (min-width: 769px) {
+  /* header desktop */
+  
+  header {
+    height: 150px;
+    transition: all 1s;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .header-alt {
+    height: 100px; 
+        transition: all 1s;
+        opacity: 90%;
+        box-shadow: 0 10px 15px -10px rgb(196, 138, 41,0.2);
+  }
+  
+  header .logo, header .logo-alt{
+    transform: translateY(-10px);
+    transition: transform 1s ease-in-out;
+  }
+
+  .header-alt .logo, .header-alt .logo-alt{
+    transform: translateY(0px);
+    transition: transform 1s ease-in-out;
+  }
+  
+  .logo, .logo-alt {
+    position: relative;
+    top: -50px;
+    margin-left: clamp(10px,5%,500px) ;
+    left: 0%;
+    transition: top 0s;
+  }
+  
+  .logo img, .logo-alt img{
+    opacity: 100%;
+    transition: all 1s ease-in-out;
+  }
+  
+  .logoIcon, .logoTypo{
+    display: flex;
+  }
+
+  .logo-alt .logoTypo{
+    opacity:0%;
+    position: absolute;
+    transition: all 0.8s ease-in-out;
+  }
+  
+  .logo-alt .logoIcon{
+    opacity:100%;
+    position: absolute;
+    transition: all 0.5s ease-in-out;
+  }
+  
+  .logo .logoIcon{
+    opacity: 0%;
+    position: absolute;
+    transition: all 0.8s ease-in-out;
+  }
+  .logo .logoTypo{
+  opacity: 100%;
+  position:absolute;
+  transition: all 0.5s ease-in-out;
+  }
+  
+  .burgerMenu{
+    display: none;
+  }
+  
+  .navbar{
+    position: static;
+    height: 150px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+
+  .menu{
+    width: auto;
+    height: auto;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    margin-right: clamp(10px,5%,500px);
+    top:50%;
+    transform: translateY(-50%);
+    right:0;
+    background: transparent;
+    transition: position 0s;
+  }
+  
+  .menu div {
+    list-style: none;
+    margin-left: clamp(5px, 2.8vw, 50px);
+    padding: 0;
+    transform: translateY(-5px);
+    transition: transform 1s;
+    border: none;
+    font-size: 3rem;
+  }
+  
+  .menu .first{
+    border-top: none;
+  }
+
+  nav a {
+    color: #faf5ff;
+    text-decoration: none;
+    font-size: clamp(15px, 2vw, 20px);
+    font-weight: 600;
+  }
+  
+  nav a:hover {
+    color: #D9992E;
+    transition: 0.3s ease-in-out;
+  }
+  
+  
+  .cta {
+    position: relative;
+    top:3px;
+    padding: 15px 20px 13px 20px;
+    border-radius: 30px;
+    display: block;
+    color: #000303;
+    border: solid #faf5ff 2px;
+    box-sizing: border-box;
+    font-weight: 700;
+    background: linear-gradient(60deg, #AD672A, #ecad09);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+  
+  .cta:hover {
+    color: #000303;
+    border: none;
+    padding: 17px 22px 15px 22px;
+    background-image: linear-gradient(50deg, #AD672A, #ecad09);
+    -webkit-background-clip: unset;
+    -webkit-text-fill-color: unset;
+    transition: padding 0s;
+    /* box-shadow: 0 0 8px 0px #D9992E; Effet Néon */
+  }
+  
+  
+  /* Effet de brillance au hover du cta */
+  .cta:hover:before {
+    content: '';
+    display: block;
+    width: 0px;
+    height: 60%;
+    position: absolute;
+    top: 20%;
+    left: 0%;
+    opacity: 0;
+    background: #ecad09;
+    box-shadow: 0 0 15px 5px #faf5ff;
+    transform: skewX(-20deg);
+    animation: shine 0.7s 0s linear;
+  }
+  
+  @keyframes shine {
+    from {
+      opacity: 0;
+      left: 0%;
+    }
+  
+    50% {
+      opacity: 0.6;
+    }
+  
+    to {
+      opacity: 0;
+      left: 100%;
+    }
+  }
+  /* fin header desktop */
+}
+  
+
+
+
+main{
+  display:block;
+  background-color: red;
+  height: 5000px;
+  padding-top : 150px;
+  }
+
+  
