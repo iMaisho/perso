@@ -2,7 +2,6 @@
 
 Dans le monde de la programmation, il existe différents outils pour différents problèmes. Chaque langage est optimisé avec une philosophie en tête, ce qui leur permet de résoudre certains types de problèmes de manière plus simple et plus efficace.
 
-
 Les logiciels adaptés au traitement de données seraient les tableurs ou spreadsheets. Cependant, dans le cas où on récupère des données via notre propre site ou application, le plus simple est de les stocker dans un fichier texte.
 
 ## Flat-file database
@@ -12,7 +11,7 @@ La virgule permet de créer les colonnes, et le passage à la ligne permet de cr
 
 Comment manipuler un fichier CSV en python ?
 
-Imaginons un fichier qui contient les colonnes "Timestamp", "Language" and "Problem"
+Imaginons un fichier qui contient les colonnes `Timestamp`, `Language` and `Problem`
 
 ```python
 import csv
@@ -81,14 +80,14 @@ with open("filename.csv", "r") as file:
             counts[favorite] = 1
 
 for favorite in counts:
-    print(f"{favorite}: {counts[favorite]})
+    print(f"{favorite}: {counts[favorite]}")
 ```
 
 On peut utiliser sorted pour print les résultats dans l'ordre alphabetique, mais le plus logique serait sûrement de les trier par ordre de popularité, en utilisant l'argument key de la fonction sorted.
 
 ```python
 for favorite in sorted(counts, key=counts.get, reverse=True):
-    print(f"{favorite}: {counts[favorite]})
+    print(f"{favorite}: {counts[favorite]}")
 ```
 
 Cette syntaxe avec 3 arguments permet à sorted de se fier aux valeurs au lieu des keys, et reverse permet d'afficher le plus gros résultat en premier, le comportement par défaut étant de trier dans l'ordre croissant.
@@ -104,7 +103,7 @@ with open("filename.csv", "r") as file:
     for row in reader:
         favorite = row["language"]
         counts[favorite] += 1
-    
+
     for favorite, count in counts.most_common():
     print(f"{favorite}: {count}")
 ```
@@ -122,7 +121,7 @@ with open("filename.csv", "r") as file:
     for row in reader:
         favorite = row["language"]
         counts[favorite] += 1
-    
+
 favorite = input("Favorite: ")
 print(f"{favorite}: {counts[favorite]}")
 ```
@@ -154,8 +153,8 @@ Dans le cadre de CS50, on utilisera une version plus légère de SQL, appelée s
 
 Pour utiliser sqlite3, on va essentiellement utiliser le terminal. On ne créera pas de fichier texte mais directement un fichier binaire.
 
-
 Voilà comment **créer la base de données**, et importer notre fichier CSV dans celle-ci :
+
 ```console
 $ sqlite3 favorites.db
 Are you sure you want to create favorites.db? [y/N] y
@@ -164,6 +163,7 @@ sqlite> .import favorites.csv favorites
 sqlite> .quit
 $
 ```
+
 On peut avoir des informations sur notre fichier grâce à cette commande :
 
 ```console
@@ -171,29 +171,33 @@ $ sqlite3 favorites.db
 sqlite> .schema
 CREATE TABLE IF NOT EXISTS "favorites"("Timestamp" TEXT, "language" TEXT, "problem" TEXT);
 ```
+
 ### Afficher les données
+
 On peut utiliser ce genre de syntaxe pour afficher **toutes les données** de notre base dans notre terminale, sous la forme d'un tableau en ASCII
 
 ```console
 sqlite> SELECT * FROM favorites;
 ```
 
-Si on veut être un  peu plus spécifique sur les données à afficher, on peut utiliser cette syntaxe pour **afficher une seule colonne** :
+Si on veut être un peu plus spécifique sur les données à afficher, on peut utiliser cette syntaxe pour **afficher une seule colonne** :
 
 ```console
 sqlite> SELECT language FROM favorites;
 ```
 
-On peut **limiter le nombre de lignes** à afficher en utilisant cette syntaxe : 
+On peut **limiter le nombre de lignes** à afficher en utilisant cette syntaxe :
+
 ```console
 sqlite> SELECT language FROM favorites LIMIT 10;
 ```
 
-### Manipuler les données 
+### Manipuler les données
 
 SQL vient avec tout un tas de fonctions que l'on peut utiliser, dans la même veine que LIMIT.
+
 - AVG = Average
-- COUNT 
+- COUNT
 - DISTINCT = Unique
 - LOWER
 - MAX
@@ -252,7 +256,7 @@ Cela nous donnera un tableau contenant les 3 langages, et le nombre de réponses
 
 Si on veut les ordonner, on peut ajouter ORDER BY puis la valeur par laquelle on veut trier. On peut aussi ajouter ASC (ascending) ou DESC (descending) pour choisir dans quel sens les ordonner.
 
-On peut également renommer les catégories, par exemple COUNT(*) en utilisant le mot clef AS
+On peut également renommer les catégories, par exemple COUNT(\*) en utilisant le mot clef AS
 
 ```console
 sqlite> SELECT COUNT(*) as n FROM favorites GROUP BY language ORDER BY n DESC;
@@ -264,7 +268,7 @@ sqlite> SELECT COUNT(*) as n FROM favorites GROUP BY language ORDER BY n DESC;
 sqlite> INSERT INTO table (column1, column2, ...) VALUES(value1, value2,...);
 ```
 
-Par exemple si on souhaitait ajouter une réponse à notre tableau, on pourrait écrire : 
+Par exemple si on souhaitait ajouter une réponse à notre tableau, on pourrait écrire :
 
 ```console
 sqlite> INSERT INTO favorites (language, problem) VALUES('SQL', 'Training');
@@ -279,6 +283,7 @@ Note : On a pas ajouté de Timestamp, donc sa valeur est NULL
 ```console
 sqlite> DELETE FROM favorites;
 ```
+
 Cette commande **SUPPRIMERA TOUTE LA BASE DE DONNEES**.
 Ne pas utiliser à moins d'être certain que c'est ce que l'on veut faire. Sinon, il faut rajouter des conditions de suppression.
 
@@ -286,11 +291,11 @@ Ne pas utiliser à moins d'être certain que c'est ce que l'on veut faire. Sinon
 sqlite> DELETE FROM favorites WHERE Timestamp IS NULL;
 ```
 
-### Modifier des données 
+### Modifier des données
 
 ```console
 sqlite> UPDATE favorites SET language = 'SQL', problem = 'Training';
-``` 
+```
 
 Cette ligne de commande modifiera les valeurs de toutes les données du tableau.
 
@@ -315,7 +320,7 @@ On pourrait penser qu'on a la même problématique, avec l'ID du show qui se ré
 De plus cela permet d'avoir encore plus de données liées les unes aux autres.
 
 ![Alt](https://github.com/iMaisho/perso/blob/main/Ressources/Images/IMDb%20Structure.png?raw=true)
-*la structure des bases de données d'IMDb*
+_la structure des bases de données d'IMDb_
 
 ### One to One
 
@@ -325,7 +330,7 @@ On pourrait théoriquement les mettre dans la même database sans poser de probl
 
 #### Datatypes
 
-Dans sqlite, si on utilise la fonction .schema sur une base de données, on obtient les noms des colonnes, et le type de données qu'elles peuvent contenir.  
+Dans sqlite, si on utilise la fonction .schema sur une base de données, on obtient les noms des colonnes, et le type de données qu'elles peuvent contenir.
 
 - BLOB = Binary Large Object
 - INTEGER
@@ -340,7 +345,7 @@ Il y a d'autres mots clefs qui peuvent être ajoutés à ces datatypes :
 - NOT NULL = Pour être sûr que ce champ est rempli avant de l'intégrer à la base de données
 - UNIQUE
 
-#### Primary Key and Foreign Key 
+#### Primary Key and Foreign Key
 
 Quand on donne un ID à une donnée dans un tableau, c'est une primary key car c'est là qu'elle est créée/attribuée.
 
@@ -366,6 +371,7 @@ CREATE TABLE ratings(
     FOREIGN KEY(show_id) REFERENCES shows(id)
 )
 ```
+
 #### Nested Queries
 
 Imaginons qu'on aimerait voir les shows qui ont un rating supérieur à 8.
@@ -376,7 +382,7 @@ SELECT show_id FROM ratings WHERE rating >= 8.0;
 
 Cette commande nous affichera tous les ID que l'on recherche. Seulement, ce n'est pas très utile car on obtient une liste de nombres cryptiques, et si on doit rechercher ces nombres un par un dans le tableau "show", on aura pas gagné beaucoup de temps.
 
-On peut donc faire une recherche imbriquée, où la recherche entre parenthèse sera résolue en premier : 
+On peut donc faire une recherche imbriquée, où la recherche entre parenthèse sera résolue en premier :
 
 ```console
 SELECT title FROM shows WHERE id IN (SELECT show_id FROM ratings WHERE rating >= 8.0);
@@ -393,13 +399,13 @@ sqlite> SELECT title, rating FROM shows JOIN ratings ON shows.id = ratings.show_
 ### One to Many
 
 ![Alt](https://github.com/iMaisho/perso/blob/main/Ressources/Images/IMDb%20Structure.png?raw=true)
-*la structure des bases de données d'IMDb*
+_la structure des bases de données d'IMDb_
 
 Si on analyse le lien entre shows et genres, on peut voir que la flèche est différente. Cela est dû au fait qu'un seul show peut avoir plusieurs genres.
 
 Lorsque l'on veut JOIN deux tableaux dans une relation one to many, le résultat affiché dupliquera le nom du show sur chaque ligne du nouveau tableau.
 
-Ce n'est pas grave, car les copies ne sont pas stockées dans la mémoire, simplement dans ce nouveau tableau éphémère qui est seulement là pour qu'on l'observe avec nos yeux. 
+Ce n'est pas grave, car les copies ne sont pas stockées dans la mémoire, simplement dans ce nouveau tableau éphémère qui est seulement là pour qu'on l'observe avec nos yeux.
 
 ### Many to many
 
@@ -409,35 +415,38 @@ On doit donc créer un 3ème tableau : stars qui permet de faire le lien entre l
 
 Rechercher des données liées par les deux tableaux est un peu plus compliqué :
 
-```console 
+```console
 sqlite> SELECT * FROM shows WHERE title = 'The Office' AND year = 2005;
 ```
+
 Cette ligne nous permet de trouver la série que l'on cherche, ici The Office
 
-```console 
-sqlite> SELECT person_id FROM stars WHERE show_id = 
+```console
+sqlite> SELECT person_id FROM stars WHERE show_id =
         (SELECT id FROM shows WHERE title = 'The Office' AND year = 2005);
 ```
 
 Cette ligne nous permet de trouver les ID des acteurs de la série
 
-```console 
-sqlite> SELECT name FROM people WHERE id IN 
-        (SELECT person_id FROM stars WHERE show_id = 
+```console
+sqlite> SELECT name FROM people WHERE id IN
+        (SELECT person_id FROM stars WHERE show_id =
         (SELECT id FROM shows WHERE title = 'The Office' AND year = 2005));
 ```
+
 Cette ligne nous permet de trouver les noms liés à ces ID.
 
-On peut également JOIN ces différents tableaux pour accéder à certaines informations. Imaginons que nous souhaitons trouver tous les shows dans lesquels Steve Carell a joué. Il y a plusieurs façon d'arriver à ce résultat : 
+On peut également JOIN ces différents tableaux pour accéder à certaines informations. Imaginons que nous souhaitons trouver tous les shows dans lesquels Steve Carell a joué. Il y a plusieurs façon d'arriver à ce résultat :
 
-```console 
-sqlite> SELECT title FROM shows WHERE id IN 
-        (SELECT show_id FROM stars WHERE person_id = 
+```console
+sqlite> SELECT title FROM shows WHERE id IN
+        (SELECT show_id FROM stars WHERE person_id =
         (SELECT id FROM people WHERE name = 'Steve Carell'));
 ```
+
 Ici, c'est la même logique qu'au dessus : On va chercher l'ID de Steve Carell, puis chercher dans stars à quels show_id ce person_id est associé, puis chercher dans shows quels titres sont associés à ces show_id. C'est la méthode la plus rapide
 
-```console 
+```console
 sqlite> SELECT title FROM shows
         JOIN stars ON shows.id = stars.show_id
         JOIN people ON stars.person_id = people.id
@@ -446,7 +455,7 @@ sqlite> SELECT title FROM shows
 
 Ici, on lie les 3 tableaux en alignant "shows.id" avec "stars.show_id" et "stars.person_id" avec "people.id", puis on va chercher dans ce grand tableau les titres des shows pour lesquels le nom de l'acteur Steve Carell apparait.
 
-```console 
+```console
 sqlite> SELECT title GROM shows, stars, people
         WHERE shows.id = stars.show_id
         AND people.id = stars.person_id
@@ -463,31 +472,31 @@ Lorsqu'on sait qu'une catégorie va souvent être recherchée par les utilisateu
 
 Au lieu d'utiliser le linear search, l'indexation va créer un B-Tree qui est un arbre dont chaque node a beaucoup d'enfants, et qui est donc très court.
 
-
 Cette structure va permettre de réduire le temps de recherche, au prix de mémoire. Cela rendra également plus lentes les modifications de la base de données, car il faudra modifier les indexs en même temps pour éviter de casser les arbres. Il faut donc les utiliser intelligemment.
 
 Par défaut, les Primary Keys sont indexées, mais ce n'est pas le cas pour les Foreign Keys et les autres datatypes.
 
-La syntaxe est la suivante : 
+La syntaxe est la suivante :
 
-```console 
+```console
 sqlite> CREATE INDEX index_name ON table_name (collumn_name);
 ```
+
 Par exemple, pour les titres des shows :
 
-```console 
+```console
 sqlite> CREATE INDEX title_index ON shows (title);
 ```
 
 ## SQL dans python
 
-cs50.readthedocs.io/libraries/cs50/python/#cs50.SQL 
+cs50.readthedocs.io/libraries/cs50/python/#cs50.SQL
 
 La vraie force des langages spécialisés, c'est qu'on peut y faire appel dans des programmes codés dans des langages différents.
 
 Le syntaxe native pour utiliser SQL dans Python étant un peu compliquée, CS50 vient avec son propre module SQL.
 
-En reprenant notre exemple de départ, la base de données où les élèves ont donné leur langage préféré ainsi que leur exercice préféré, voilà comment on pourrait récupérer le nombre d'élève ayant voté pour le langage que l'utilisateur input : 
+En reprenant notre exemple de départ, la base de données où les élèves ont donné leur langage préféré ainsi que leur exercice préféré, voilà comment on pourrait récupérer le nombre d'élève ayant voté pour le langage que l'utilisateur input :
 
 ```python
 from cs50 import SQL
@@ -515,8 +524,9 @@ Cette analogie représente ce qui peut arriver lorsque beaucoup d'utilisateurs e
 
 Si beaucoup d'utilisateurs envoient des likes en même temps, il se pourrait que la valeur des likes actuels ne soient pas encore à jour quand on l'incrémente, donc on perd des likes au passage.
 
-Ex : 
-- 0 likes actuellement, 
+Ex :
+
+- 0 likes actuellement,
 - Je like, elle like.
 - Je récupère la valeur 0
 - Elle récupère la valeur 0
@@ -525,7 +535,7 @@ Ex :
 - Elle renvoie la valeur 1 au serveur
 - Résultat : 1 like sur le post au lieu de 2
 
-Il y a des solutions à ces problèmes : 
+Il y a des solutions à ces problèmes :
 
 - BEGIN TRANSACTION / COMMIT: Fait en sorte que toutes les lignes de code s'exécutent ensemble, ou ne s'exécutent pas
 
@@ -533,6 +543,6 @@ Il y a des solutions à ces problèmes :
 
 ## SQL Injection Attack
 
- Il est important d'utiliser la syntaxe avec les placeholders "?" afin de s'assurer de ne pas risquer une attaque par injection.
+Il est important d'utiliser la syntaxe avec les placeholders "?" afin de s'assurer de ne pas risquer une attaque par injection.
 
- Par exemple, sur un formulaire de connexion, on pourrait avoir une faille qui permettrait de faire de la partie du code qui demande le password un commentaire, bypassant totalement la sécurité du site, et permettant de se connecter seulement avec l'identifiant de connexion.
+Par exemple, sur un formulaire de connexion, on pourrait avoir une faille qui permettrait de faire de la partie du code qui demande le password un commentaire, bypassant totalement la sécurité du site, et permettant de se connecter seulement avec l'identifiant de connexion.

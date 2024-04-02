@@ -1,5 +1,7 @@
 # HTML, CSS, JS
+
 ## Internet
+
 ### TCP/IP
 
 IP = Internet Protocol
@@ -28,7 +30,8 @@ HTTPS = Secured
 
 ### Get & Post
 
-Pour aller sur le site de Harvard, on va taper harvard.edu dans notre navigateur. Ce dernier enverra une requête au serveur sous cette forme :
+Pour aller sur le site de Harvard, on va taper `harvard.edu` dans notre navigateur. Ce dernier enverra une requête au serveur sous cette forme :
+
 ```
 GET / HTTP/2
 Host : www.harvard.edu
@@ -68,3 +71,81 @@ Ne pas faire confiance "client-side", car l'HTML peut être modifié grâce aux 
 
 validator.w3.org permet de vérifier que notre HTML est correct au niveau de la syntaxe.
 
+## CSS Best Practices
+
+### Penser en boites (Content, Padding, Border, Margin)
+
+Par défaut, le CSS est pensé en `content-box`, on préfère le configurer en `border-box` pour inclure le padding et la marge.
+
+Il faut penser nos boîtes horizontalement, car une nouvelle `div` nous permettra d'ajouter du contenu verticalement.
+
+Les boites ont des relations de parent-enfant, et le CSS est pensé en cascade, donc les attributs des parents sont automatiquement donnés aux enfants à moins d'être overwrités.
+
+### Flexbox
+
+Il faut utiliser flexbox à la place de `absolute-positioning`, ce qui simplifie largement le responsive en fonction de la taille de l'écran, et qui permet d'ajuster facilement le layout en cas d'ajout ou de suppression d'élément.
+
+Ces trois propriétés sont les plus importantes :
+
+```CSS
+diplay;
+justify-content;
+align-items;
+```
+
+D'autres propriétés cool :
+
+```CSS
+flex-grow;
+```
+
+### Grid
+
+Pour les éléments qu'on souhaite afficher sur deux dimensions, c'est `display:"grid";` qui est le plus adapté.
+
+Pour utiliser facilement grid, il faut choisir notre plus petite unité de taille. Un exemple commun serait de diviser notre canva en 12, qui est divisible par 2, 3, 4 et 6. Cela nous permettra de faire des lignes de 2, 3, 4 ou 6 éléments.
+
+Si nos éléments sont tous alignés horizontalement, c'est facile. Pour définir notre grid, on va sur l'élément parent, et on utilise les propriétés suivantes :
+
+```CSS
+display:"grid";
+gridTemplateColumns:"repeat(12, 1fr)";
+gridAutoRows: (taille en px);
+gap: (taille en px);
+```
+
+Puis, pour chacun de nos enfants, on vient définir les paramètres `gridColumn` et `gridRow`, en utilisant `span` pour définir leur taille en terme d'unités.
+
+```CSS
+gridColumn:"span 8";
+gridRow:"span 2";
+```
+
+Enfin, si on souhaite que nos éléments aient des hauteurs différentes au sein d'une même ligne, c'est un peu plus complexe. On va utiliser un paramètre appelé `gridTemplateAreas`. On va ensuite créer une constante qui contiendra une matrice, qui nous permettra de définir la taille de nos objets :
+
+```CSS
+gridTemplateAreas:"constante";
+```
+
+```CSS
+const constante = '
+"a b c"
+"a b c"
+"a b c"
+"a b f"
+"d e f"
+"d e f"
+"d h i"
+"g h i"
+"g h j"
+"g h j"
+'
+```
+
+On vient ensuite définir la propriété `gridArea` de chaque boîte.
+
+```CSS
+gridArea="a";
+```
+
+La constante ci-dessus nous donnera ce layout :
