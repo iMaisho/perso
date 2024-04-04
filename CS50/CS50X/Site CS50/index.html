@@ -1,63 +1,90 @@
 <!DOCTYPE html>
 
 <html lang="fr">
-    <head>
-        <title>Bienvenue !</title>
-        <link href="styles.css" rel="stylesheet">
-        <meta name="viewport" content="initial-scale=1, width=device-width">
+  <head>
+    <title>Bienvenue !</title>
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <link href="styles.css" rel="stylesheet" />
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
+    />
+    <script src="script.js"></script>
+  </head>
 
-
-    </head>
-
-<body>
+  <body>
     <header>
-        <img src="">
+      <img src="" />
     </header>
 
-
     <nav>
-        <a href="index.html" class="nav">Accueil</a>
-        <a href="" class="nav">Projets</a>
-        <a href="" class="nav">Contact</a>
+      <a href="index.html" class="nav">Accueil</a>
+      <a href="" class="nav">Projets</a>
+      <a href="" class="nav">Me contacter</a>
     </nav>
 
-
     <main>
-        <div>
-            <h1>Bonjour, moi c'est Antonin MINGAM</h1>
-            <h2>Explorateur de la programmation</h2>
+      <div class="hero-header">
+        <img src="ressources/antonin.png" />
+        <div class="hero-header-text">
+          <h1>Bonjour, moi c'est Antonin</h1>
+          <h2>Explorateur de la programmation</h2>
+          <a href="" class="nav">Me contacter</a>
         </div>
+      </div>
 
-        <div>
-            <h1>
-                Les technologies que j'ai découvertes à ce jour :
-            </h1>
-            <ul>
-                <li>C</li>
-                <li>Python</li>
-                <li>SQL</li>
-                <li>HTML</li>
-                <li>CSS</li>
-                <li>JS</li> 
-            </ul>
-            
-        </div>
+      <hr />
 
-        <div>
-            <h1>
-                Mes projets
-            </h1>
-            <a href="projets/portfolio.html" class="project">Ce portfolio</a>
-            <a href="" class="project">Projet final de CS50P</a>
-            <a href="" class="project">CS50P</a>
-            <a href="" class="project">CS50X</a>
+      <div class="roller">
+        <h1>Les technologies que j'ai découvertes à ce jour :</h1>
+        <div class="roller-content">
+          <div class="roller-section">
+            <i class="devicon-c-plain"></i>
+            <div class="roller-section-legende">C</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-python-plain"></i>
+            <div class="roller-section-legende">Python</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-sqlite-plain"></i>
+            <div class="roller-section-legende">SQLite</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-html5-plain"></i>
+            <div class="roller-section-legende">HTML 5</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-css3-plain"></i>
+            <div class="roller-section-legende">CSS 3</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-javascript-plain"></i>
+            <div class="roller-section-legende">Javascript</div>
+          </div>
+
+          <div class="roller-section">
+            <i class="devicon-flask-original"></i>
+            <div class="roller-section-legende">Flask</div>
+          </div>
         </div>
+      </div>
+
+      <div>
+        <h1>Mes projets</h1>
+        <a href="projets/portfolio.html" class="project">Ce portfolio</a>
+        <a href="" class="project">Projet final de CS50P</a>
+        <a href="" class="project">CS50P</a>
+        <a href="" class="project">CS50X</a>
+      </div>
     </main>
 
-
-    <footer>
-
-    </footer>
-</body>
-
+    <footer></footer>
+  </body>
 </html>
