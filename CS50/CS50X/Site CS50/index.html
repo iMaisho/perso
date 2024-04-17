@@ -10,78 +10,159 @@
       type="text/css"
       href="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/devicon.min.css"
     />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Josefin+Sans:ital,wght@0,100..700;1,100..700&display=swap"
+      rel="stylesheet"
+    />
+
     <script src="script.js"></script>
   </head>
 
   <body>
     <header>
-      <img src="" />
+      <nav class="navbar">
+        <button class="burgerMenu">
+          <span class="burgerBar"></span>
+        </button>
+        <span class="menu">
+          <div class="menuTop"></div>
+          <div class="menuLink">
+            <a href="index.html"><span class="menuTitle">ACCUEIL</span></a>
+          </div>
+          <div class="menuLink">
+            <a href="wip.html"><span class="menuTitle">MON PARCOURS</span></a>
+          </div>
+          <div class="menuLink">
+            <a href="wip.html"><span class="menuTitle">MES PROJETS</span></a>
+          </div>
+          <div class="menuLink">
+            <a href="wip.html"><span class="menuTitle">ME CONTACTER</span></a>
+          </div>
+        </span>
+      </nav>
     </header>
-
-    <nav>
-      <a href="index.html" class="nav">Accueil</a>
-      <a href="" class="nav">Projets</a>
-      <a href="" class="nav">Me contacter</a>
-    </nav>
 
     <main>
       <div class="hero-header">
-        <img src="ressources/antonin.png" />
-        <div class="hero-header-text">
-          <h1>Bonjour, moi c'est Antonin</h1>
-          <h2>Explorateur de la programmation</h2>
-          <a href="" class="nav">Me contacter</a>
+        <div class="hero-header-bg">
+          <div class="astronaut"></div>
+          <div class="planet-sand">
+            <img src="ressources/planet_sand.svg" />
+          </div>
+          <div class="planet-earth">
+            <img src="ressources/planet_earth.svg" />
+          </div>
+          <div class="planet-sun"><img src="ressources/planet_sun.svg" /></div>
+          <div class="bg-stars"></div>
+          <div class="bg-twirl"></div>
+        </div>
+        <div class="planet-floor">
+          <img src="ressources/planet-floor.svg" />
+        </div>
+        <div class="hero-header-content">
+          <h1>Bonjour ! Moi c'est Antonin,</h1>
+          <h3>"Explorateur de la programmation"</h3>
+          <div>
+            <button>Mon CV</button> <button href="">Me contacter</button>
+          </div>
         </div>
       </div>
 
-      <hr />
-
       <div class="roller">
-        <h1>Les technologies que j'ai découvertes à ce jour :</h1>
+        <!-- <img src="ressources/bg_space4.jpg" /> -->
+        <div class="roller-title">
+          <h1>Les technologies que j'ai découvertes à ce jour :</h1>
+        </div>
         <div class="roller-content">
           <div class="roller-section">
-            <i class="devicon-c-plain"></i>
+            <i class="devicon-c-plain" class="roller-icon"></i>
             <div class="roller-section-legende">C</div>
           </div>
 
           <div class="roller-section">
-            <i class="devicon-python-plain"></i>
+            <i class="devicon-python-plain" class="roller-icon"></i>
             <div class="roller-section-legende">Python</div>
           </div>
 
           <div class="roller-section">
-            <i class="devicon-sqlite-plain"></i>
+            <i class="devicon-sqlite-plain" class="roller-icon"></i>
             <div class="roller-section-legende">SQLite</div>
           </div>
 
           <div class="roller-section">
-            <i class="devicon-html5-plain"></i>
+            <i class="devicon-html5-plain" class="roller-icon"></i>
             <div class="roller-section-legende">HTML 5</div>
           </div>
 
-          <div class="roller-section">
-            <i class="devicon-css3-plain"></i>
+          <div class="roll er-section">
+            <i class="devicon-css3-plain" class="roller-icon"></i>
             <div class="roller-section-legende">CSS 3</div>
           </div>
 
           <div class="roller-section">
-            <i class="devicon-javascript-plain"></i>
+            <i class="devicon-javascript-plain" class="roller-icon"></i>
             <div class="roller-section-legende">Javascript</div>
           </div>
 
           <div class="roller-section">
-            <i class="devicon-flask-original"></i>
+            <i class="devicon-flask-original" class="roller-icon"></i>
             <div class="roller-section-legende">Flask</div>
           </div>
         </div>
       </div>
 
-      <div>
+      <div class="projects">
         <h1>Mes projets</h1>
-        <a href="projets/portfolio.html" class="project">Ce portfolio</a>
-        <a href="" class="project">Projet final de CS50P</a>
-        <a href="" class="project">CS50P</a>
-        <a href="" class="project">CS50X</a>
+
+        <div class="projects-content">
+          <a href="projets/portfolio.html" class="projects-content-link"
+            ><span></span>
+          </a>
+          <div class="projects-content-title">Ce portfolio</div>
+          <div class="projects-content-description">
+            Dans le cadre de la semaine 8 de CS50X, il nous est demandé de
+            réaliser un petit site en utilisant HTML, CSS, JS et Bootstrap. J'ai
+            décidé de profiter de cet exercice pour créer mon portfolio.
+          </div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50X</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50P - Projet Final</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50P</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+      </div>
+
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+          Hello, world! This is a toast message.
+          <div class="mt-2 pt-2 border-top">
+            <button type="button" class="btn btn-primary btn-sm">
+              Take action
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="toast"
+            >
+              Close
+            </button>
+          </div>
+        </div>
       </div>
     </main>
 

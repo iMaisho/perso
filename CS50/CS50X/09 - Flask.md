@@ -14,8 +14,7 @@ Un input en guise d'URL se présente comme ça :
 
 Par exemple, google.com/search?q=cats
 
-
-## MicroFramework 
+## MicroFramework
 
 Un framework est conçu pour résoudre des problèmes particuliers beaucoup plus simplement.
 
@@ -23,7 +22,7 @@ Par convention dans Flask, on aura dans notre programme un fichier python **app.
 
 On aura aussi un fichier **requirements.txt** pour appeller les librairies externes au programme, et un dossier **static/** pour les fichiers CSS et JS, les images etc...
 
-### Les bases : 
+### Les bases :
 
 ```python
 from flask import Flask, render_template, request
@@ -36,22 +35,22 @@ def index():
     return render_template("index.html")
 ```
 
-**app.py :** Ce bout de code nous permet, lorsque l'on souhaite utiliser Flask pour héberger son site sur un serveur temporaire en utilisant *run flask*, de faire en sorte que "domain.com/" affiche "domain.com/index.html".
+**app.py :** Ce bout de code nous permet, lorsque l'on souhaite utiliser Flask pour héberger son site sur un serveur temporaire en utilisant _run flask_, de faire en sorte que "domain.com/" affiche "domain.com/index.html".
 
-### Comment faire pour rendre cet HTML dynamique ? 
+## Comment faire pour rendre cet HTML dynamique ?
 
 ```html
 <!DOCTYPE html>
 
 <html lang="en">
-    <head>
-        // Compatibilité mobile
-        <meta name="viewport" content="initial-scale=1, width=device-width">
-        <title>hello</title>
-    </head>
-    <body>
-        hello, {{ placeholder }}
-    </body>
+  <head>
+    // Compatibilité mobile
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>hello</title>
+  </head>
+  <body>
+    hello, {{ placeholder }}
+  </body>
 </html>
 ```
 
@@ -79,7 +78,7 @@ Mais une façon plus simple d'arriver à ce résultat est d'utiliser la fonction
 name = request.args.get("name", "world")
 ```
 
-Pour que la valeur attendue des placeholders soit plus compréhensive dans le fichier HTML, on viendra souvent leur donner le nom de la variable souhaitée : 
+Pour que la valeur attendue des placeholders soit plus compréhensive dans le fichier HTML, on viendra souvent leur donner le nom de la variable souhaitée :
 
 ```HTML
 <body>
@@ -133,7 +132,7 @@ On crée le fichier "greet.html" dans notre dossier "/templates", et on y met no
 </body>
 ```
 
-### Eviter la duplication
+### Eviter la duplication grâce à JINJA
 
 On se retrouve avec deux fichiers HTML quasi-identiques, dont seul le contenu du body change.
 
@@ -149,7 +148,7 @@ On va copier le contenu commun à nos pages dans celui-ci et ajouter cette synta
 </body>
 ```
 
-En gros on crée un placeholder pour un bloc de code.
+En gros on crée un placeholder pour un bloc de code, grâce à la syntaxe de JINJA
 
 On va ensuite dans chacunes de nos pages qui veulent utiliser ce layout, on supprime tout leur contenu sauf le bloc qui change, et on ajoute cette syntaxe :
 
@@ -169,7 +168,7 @@ Retrouver ces valeurs dynamiques dans l'URL peut être très pratique, pour envo
 
 Cependant, dans le cas des mots de passe, des informations bancaires etc.. Il vaudrait mieux que ces données restent privées.
 
-En changeant la méthode "get" en "post", on résoud ce problème : 
+En changeant la méthode "get" en "post", on résoud ce problème :
 
 ```HTML
 <form action="/greet"   method="post">
@@ -230,7 +229,7 @@ Pour remédier à ce problème, on peut supprimer la valeur par défaut pour nam
 
 {% block body %}
 
-    hello 
+    hello
         {% if name %}
             {{ name }}
         {% else %}
@@ -250,7 +249,7 @@ Il faut donc résoudre ce problème en effectuant des vérifications du côté d
 
 Partons de cet exemple de formulaire, pour s'inscrire à une sport donné dans une liste :
 
-```HTML 
+```HTML
 {% extends "layout.html" %}
 
 {% block body %}
@@ -335,3 +334,164 @@ def register():
     # Confirm registration
     return render_template("success.html")
 ```
+
+On peut utiliser un dictionnaire pour stocker ces paires nom:sport.
+
+```python
+REGISTRANTS = {}
+
+...
+
+REGISTRANTS[name] = sport
+```
+
+Même si l'action du bouton est d'envoyer sur la route `register`, on peut utiliser la fonction de Flask `redirect` pour renvoyer sur une autre page, par exemple la liste des personnes enregistrées qu'on aurait créée en HTML dynamique.
+
+```python
+    # Confirm registration
+    return redirect("/registrants")
+
+
+@app.route("/registrants")
+def registrants():
+    return render_template("registrants.html", registrants=REGISTRANTS)
+```
+
+Pour l'instant, la liste est stockée dans la RAM, donc elle n'est pas permanente. En cas d'arrêt du serveur, ou d'autre problème, les données seront perdues.
+
+### Utiliser SQL pour stocker les données
+
+SQL est un des rares cas où CS5O continue de nous fournir leur module pour travailler, car ce n'est pas simple de setup un projet avec SQL.
+
+```python
+from CS50 import SQL
+
+db = SQL("sqlite:///name.db")
+```
+
+La database a été créée avec 3 colonnes, ID, name, sport.
+
+Dans register, on vient inclure le fait de l'ajouter au tableau :
+
+```python
+@app.route("/register", methods=["POST"])
+def register():
+
+    # Validate submission
+    name = request.form.get("name")
+    sport = request.form.get("sport")
+    if not name or sport not in SPORTS:
+        return render_template("failure.html")
+
+    # Remember registrant
+        db.execute("INSERT INTO registrants (name, sport) VALUES(?, ?)", name, sport)
+
+    # Confirm registration
+    return redirect("/registrants")
+```
+
+Pour récupérer les données de la base et les injecter dans notre code HTML sous la forme d'un dictionnaire, on ajoute une ligne de code à registrants:
+
+```python
+@app.route("/registrants")
+def registrants():
+    registrants = db.execute("SELECT * FROM registrants")
+    return render_template("registrants.html", registrants=registrants)
+```
+
+Chacune des personnes qui seront ajoutées à la base de données aura un ID unique qui lui sera attribuée, ce qui permettra de traiter leurs données sans problème, même si elles ont le même nom par exemple.
+
+Imaginons qu'on souhaite ajouter la fonctionnalité de désinscription :
+
+On ajoute à chaque élément de la liste ce bouton liée à ces fonctions:
+
+```html
+<form action="/deregister" method="post">
+  <input name="id" type="hidden" value="{{ registrant.id }}" />
+  <button type="submit">Deregister</button>
+</form>
+```
+
+```python
+@app.route("/deregister", methods=["POST"])
+def deregister():
+
+    # Forget registrant
+    id = request.form.get("id")
+    if id:
+        db.execute("DELETE FROM registrants WHERE id = ?", id)
+    return redirect("/registrants")
+```
+
+### Cache & Cookies
+
+Quand on se connecte à un site, le navigateur va envoyer une requête "Set Cookies" au serveur, qui nous retourne une key-value pair avec un identifiant unique.
+Dépendemment de la date d'expiration de cet identifiant, la prochaine fois qu'on se rend sur ce site notre navigateur va envoyer cette key-value pair dans une requête "Cookies", le serveur va vérifier si elle existe, et si c'est le cas, cela prouve notre "identité numérique", et le serveur nous laisse entrer sans avoir à taper nos identifiants.
+
+Effectivement, il garde en mémoire l'état de notre session précédente sur le site.
+
+Dans Flask, il y a une fonction qui s'appelle `session` qui va nous permettre de configurer ces conditions.
+
+```python
+from flask import session
+from flask_session import Session
+
+# Permet d'effacer les cookies à la fermeture du navigateur
+app.config["SESSION_PERMANENT"] = False
+# Permet de conserver le contenu de notre session sur le serveur, et pas dans le cookie
+app.config["SESSION_TYPE"] = "filesystem"
+# Activer Session
+Session(app)
+```
+
+Imaginons qu'on setup un formulaire de connexion
+
+session agit comme un dictionnaire (aka. "REGISTRANTS = {}"), sauf qu'au lieu d'avoir un dictionnaire global, il ne fournit à l'utilisateur que les données liées à son compte
+
+```python
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    if request.method == "POST":
+        session["name"] = request.form.get("name")
+        return redirect("/")
+    return render_template("login.html")
+
+
+@app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/")
+```
+
+## Une approche plus moderne
+
+Plutôt que d'avoir à modifier l'URL, ce qui résulte en l'écran qui recharge une page, une approche plus moderne est d'utiliser AJAX (Asynchronus Javascript And XML). Utiliser Javascript pour obtenir plus de données du serveur.
+
+```html
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>shows</title>
+  </head>
+  <body>
+    <input autocomplete="off" autofocus placeholder="Query" type="search" />
+
+    <ul></ul>
+
+    <script>
+      let input = document.querySelector("input");
+      input.addEventListener("input", async function () {
+        let response = await fetch("/search?q=" + input.value);
+        let shows = await response.text();
+        document.querySelector("ul").innerHTML = shows;
+      });
+    </script>
+  </body>
+</html>
+```
+
+Ceci est la version en interne d'une API, on pourrait imaginer aller chercher les réponses sur un autre serveur à l'aide d'une API.
+
+Le plus commun n'est pas de recevoir du HTML comme dans ce cas, où on reçoit des <li></li>, mais plutôt du JSON

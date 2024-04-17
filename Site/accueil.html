@@ -1,53 +1,162 @@
 <!DOCTYPE html>
 <html lang="fr">
-<link href="header.css" rel="stylesheet">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link href="header.css" rel="stylesheet" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap"
+    rel="stylesheet"
+  />
 
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Accueil</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap"
+      rel="stylesheet"
+    />
+    <script src="script.js"></script>
+  </head>
 
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Accueil</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=League+Spartan:wght@100;200;300;400;500;600;700;800;900&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
-        <script src="script.js"></script>
-      </head>
+  <body>
+    <header>
+      <div class="logo">
+        <a class="logoTypo" href="accueil.html"
+          ><img src="images/logoTypo.png" alt="MADS Studio"
+        /></a>
+        <a class="logoIcon" href="accueil.html"
+          ><img src="images/logoIcon.png" alt="MADS Studio"
+        /></a>
+      </div>
+      <nav class="navbar">
+        <button class="burgerMenu">
+          <span class="burgerBar"></span>
+        </button>
+        <span class="menu">
+          <div class="first">
+            <a class="link" href="accueil.html">ACCUEIL</a>
+          </div>
+          <div><a class="link" href="services.html">MON PARCOURS</a></div>
+          <div><a class="link" href="#">MES PROJETS</a></div>
+          <div><a class="link" href="#"></a></div>
+          <div><a class="cta" href="#">ME CONTACTER</a></div>
+        </span>
+      </nav>
+    </header>
 
+    <main>
+      <div class="hero-header">
+        <img src="ressources/antonin.png" />
+        <div class="hero-header-text">
+          <h1>Bonjour, moi c'est Antonin</h1>
+          <h2>Explorateur de la programmation</h2>
+          <div>
+            <button>Mon CV</button> <a href="" class="nav">Me contacter</a>
+          </div>
+        </div>
+      </div>
 
+      <div class="roller">
+        <!-- <img src="ressources/bg_space4.jpg" /> -->
+        <div class="roller-title">
+          <h1>Les technologies que j'ai découvertes à ce jour :</h1>
+        </div>
+        <div class="roller-content">
+          <div class="roller-section">
+            <i class="devicon-c-plain"></i>
+            <div class="roller-section-legende">C</div>
+          </div>
 
-    <body>
+          <div class="roller-section">
+            <i class="devicon-python-plain"></i>
+            <div class="roller-section-legende">Python</div>
+          </div>
 
-        <header>
-            <div class="logo">
-              <a class="logoTypo" href="accueil.html"><img  src="images/logoTypo.png" alt="MADS Studio"></a>
-              <a class="logoIcon" href="accueil.html"><img  src="images/logoIcon.png" alt="MADS Studio"></a>
-            </div>
-            <nav class="navbar">
-              <button class="burgerMenu">
-                <span class="burgerBar"></span>
-              </button>
-              <span class="menu">
-                <div class="first"><a class="link" href="accueil.html">accueil</a></div>
-                <div><a class="link" href="services.html">mon parcours</a></div>
-                <div><a class="link" href="#">mes projets</a></div>
-                <div><a class="link" href="#"></a></div>
-                <div><a class="cta" href="#">me contacter</a></div>
-              </span>
-              <div><button>EN</button></div>
-            </nav>
-            
-            
-          </header>
+          <div class="roller-section">
+            <i class="devicon-sqlite-plain"></i>
+            <div class="roller-section-legende">SQLite</div>
+          </div>
 
-          <main>
+          <div class="roller-section">
+            <i class="devicon-html5-plain"></i>
+            <div class="roller-section-legende">HTML 5</div>
+          </div>
 
+          <div class="roller-section">
+            <i class="devicon-css3-plain"></i>
+            <div class="roller-section-legende">CSS 3</div>
+          </div>
 
-          </main>
+          <div class="roller-section">
+            <i class="devicon-javascript-plain"></i>
+            <div class="roller-section-legende">Javascript</div>
+          </div>
 
+          <div class="roller-section">
+            <i class="devicon-flask-original"></i>
+            <div class="roller-section-legende">Flask</div>
+          </div>
+        </div>
+      </div>
 
-    </body>
+      <div class="projects">
+        <h1>Mes projets</h1>
+
+        <div class="projects-content">
+          <a href="projets/portfolio.html" class="projects-content-link"
+            ><span></span>
+          </a>
+          <div class="projects-content-title">Ce portfolio</div>
+          <div class="projects-content-description">
+            Dans le cadre de la semaine 8 de CS50X, il nous est demandé de
+            réaliser un petit site en utilisant HTML, CSS, JS et Bootstrap. J'ai
+            décidé de profiter de cet exercice pour créer mon portfolio.
+          </div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50X</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50P - Projet Final</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+
+        <div class="projects-content">
+          <a href="wip.html" class="projects-content-link"><span></span> </a>
+          <div class="projects-content-title">CS50P</div>
+          <div class="projects-content-description">Description du projet</div>
+        </div>
+      </div>
+
+      <div class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+        <div class="toast-body">
+          Hello, world! This is a toast message.
+          <div class="mt-2 pt-2 border-top">
+            <button type="button" class="btn btn-primary btn-sm">
+              Take action
+            </button>
+            <button
+              type="button"
+              class="btn btn-secondary btn-sm"
+              data-bs-dismiss="toast"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </main>
+  </body>
 </html>

@@ -132,7 +132,7 @@ header {
 @media (min-width: 769px) {
   /* header desktop */
   
-  header {
+  /* header {
     height: 150px;
     transition: all 1s;
     display: flex;
@@ -273,11 +273,11 @@ header {
     -webkit-text-fill-color: unset;
     transition: padding 0s;
     /* box-shadow: 0 0 8px 0px #D9992E; Effet Néon */
-  }
+  } */
   
   
   /* Effet de brillance au hover du cta */
-  .cta:hover:before {
+  /* .cta:hover:before {
     content: '';
     display: block;
     width: 0px;
@@ -306,7 +306,7 @@ header {
       opacity: 0;
       left: 100%;
     }
-  }
+  } */
   /* fin header desktop */
 }
   
