@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <button id="toggleHide">Hide Text</button>
+    <p id="text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Assumenda odio, modi maiores quas, sint quod
+        nulla deleniti et cupiditate accusamus velit incidunt dicta quia itaque dignissimos eaque culpa officiis
+        repudiandae. Asperiores dolor necessitatibus quia sequi possimus nam esse quasi porro nemo accusantium, odit sit
+        totam modi enim nisi! Iste, consequatur.</p>
+
+</body>
+
+</html>
+
+<script>
+    const hideBtn = document.getElementById("toggleHide");
+    const text = document.getElementById("text");
+
+    console.log(text);
+    hideBtn.onclick = function () {
+        if (!(text.style.display == "none")) {
+            text.style.display = "none";
+            hideBtn.innerText = "Show Text";
+        }
+        else {
+            text.style.display = "block";
+            hideBtn.innerText = "Hide Text";
+        }
+    }
+</script>

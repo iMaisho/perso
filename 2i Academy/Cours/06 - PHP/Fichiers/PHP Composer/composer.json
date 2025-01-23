@@ -1,0 +1,23 @@
+{
+    "name": "m2i/test-composer",
+    "description": "Un projet test de composer",
+    "authors": [
+        {
+            "name": "anto",
+            "email": "anto@anto.com"
+        }
+    ],
+    "require": {
+        "mexitek/phpcolors": "^1.0",
+        "filp/whoops": "^2.16"
+    },
+    "require-dev": {
+        "fakerphp/faker": "^1.24"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "M2i\\App\\": "src/"
+        }
+    }
+}

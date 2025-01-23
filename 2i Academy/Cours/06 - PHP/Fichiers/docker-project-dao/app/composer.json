@@ -1,0 +1,21 @@
+{
+    "name": "administrateur/docker-project",
+    "description": "un framework simple en php",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "M2i\\App\\": "src/",
+            "M2i\\Core\\": "core/"
+        }
+    },
+    "authors": [
+        {
+            "name": "seb",
+            "email": "seb@seb.com"
+        }
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11.5"
+    }
+}

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>DOM</title>
+</head>
+
+<body id="page">
+    <h2>Les langues</h2>
+    <ul id="languages">
+        <li class="item">Français</li>
+        <li class="item">Anglais</li>
+        <li class="item">Japonais</li>
+    </ul>
+    <h2>Les pays</h2>
+    <ul id="countries">
+        <li class="item">France</li>
+        <li class="item">Royaume Uni</li>
+        <li class="item">Japon</li>
+    </ul>
+</body>
+
+<script>
+    const countryList = document.querySelectorAll("#countries .item");
+    var countryTable = []
+    for (country of countryList) {
+        countryTable.push(country.innerText);
+        if (country.innerText.toLowerCase().startsWith("fr")) {
+            country.innerHTML = "<em>" + country.innerText + "</em>"
+        }
+    }
+
+    // const page = document.querySelector("#page");
+    // page.innerHTML = "";
+
+    // page.innerHTML = countryList.innerHTML
+
+    const countries = document.querySelector("#countries");
+    page.innerHTML = countries.innerHTML + page.innerHTML;
+
+    countryTable = countryTable.sort();
+    console.log(countryTable);
+</script>
+
+</html>
