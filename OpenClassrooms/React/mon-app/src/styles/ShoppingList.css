@@ -1,0 +1,15 @@
+.lmj-shopping-list {
+  padding: 32px;
+}
+
+.lmj-shopping-list ul {
+  font-size: 40px;
+}
+
+.lmj-shopping-list li {
+  font-size: 20px;
+}
+
+.lmj-sales {
+  color: green;
+}
