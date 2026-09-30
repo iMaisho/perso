@@ -326,18 +326,20 @@ while (i < 3) { println(i); i += 1 }
 
 ```scala
 object Main extends App {
+  
   val name: String = "Antonin"
-
-  println(s"Hello, $name!")
-
+  // Todo: write your code here
+  println(s"Hello $name !")
+  
   for (i <- 1 to 10) println(i)
 }
 ```
 
 Rien de compliqué ici, mais quelques points à retenir :
 - `val` et non `var` : le nom ne change jamais.
+- `s"Hello $name !"` : le `s` devant la chaîne active l'interpolation, `$name` est remplacé par la valeur de la `val`.
 - `1 to 10` et pas `1 until 10`, sinon on s'arrête à 9.
-- Dans ma première version j'avais écrit `s"Hello $name !"`, ce qui affiche `Hello Antonin !` au lieu de `Hello, Antonin!`. Ces exercices sont vérifiés automatiquement en comparant la sortie caractère par caractère : la virgule et l'espace comptent.
+- La boucle tient sur une ligne : quand le corps du `for` est une seule expression, pas besoin d'accolades.
 
 ### Exercice 02 — Guess the Number (non-interactif)
 
@@ -349,34 +351,55 @@ def play(secret: Int, guesses: List[Int]): List[String]
 ```
 Pour chaque tentative, produire `"Attempt N: X is too small!"`, `"Attempt N: X is too big!"` ou `"Attempt N: X is correct! Found in N attempt(s)."`. On s'arrête dès que le secret est trouvé et on ignore les tentatives suivantes.
 
-#### Version impérative (ma première solution)
+#### Solution
 
 ```scala
-import scala.util.control.Breaks._
+object Main extends App {
+  import scala.util.control.Breaks._
 
-def play(secret: Int, guesses: List[Int]): List[String] = {
-  var tries = 0
-  var answers: List[String] = List()
-  breakable {
-    for (guess <- guesses) {
+  val secret = 42
+  val guesses = List(50, 25, 40, 45, 42)
+
+  play(secret, guesses).foreach(println)
+
+  def play(secret: Int, guesses: List[Int]): List[String] = {
+
+    var tries = 0
+    var answers:List[String] = List()
+    breakable{
+      for (guess <- guesses){
       tries = tries + 1
-      if (guess == secret) {
-        answers = answers :+ s"Attempt $tries: $guess is correct! Found in $tries attempt(s)."
+      if (guess == secret){
+        val string = s"Attempt $tries: $guess is correct! Found in $tries attempt(s)."
+        answers = answers :+ string
         break()
       }
-      else if (guess < secret) answers = answers :+ s"Attempt $tries: $guess is too small!"
-      else answers = answers :+ s"Attempt $tries: $guess is too big!"
+      else if (guess < secret){
+        val string = s"Attempt $tries: $guess is too small!"
+        answers = answers :+ string
+      }
+      else{
+        val string = s"Attempt $tries: $guess is too big!"
+        answers = answers :+ string
+      }
+      }
     }
+    answers
   }
-  answers
 }
 ```
 
-Ça marche, mais c'est exactement le style qu'on cherche à quitter : deux `var`, un `break` simulé par exception, et une liste qu'on reconstruit à chaque tour. En plus, `answers :+ x` (ajout **en fin** de `List`) coûte O(n) à chaque fois : on verra pourquoi en Session 2, et l'exercice 04 le mesure.
+Le déroulé :
+1. **`tries`** compte les tentatives. C'est une `var` puisqu'on l'incrémente à chaque tour.
+2. **`answers`** accumule les phrases. C'est aussi une `var` : la `List` elle-même est immuable, donc `answers :+ string` crée une nouvelle liste avec la phrase ajoutée en fin, et on réassigne `answers` pour pointer dessus.
+3. Pour chaque tentative, le `if / else if / else` choisit la bonne phrase.
+4. Dès que le secret est trouvé, **`break()`** sort de la boucle, ce qui ignore les tentatives suivantes. Scala n'a pas de mot-clé `break` : il faut importer `scala.util.control.Breaks._` et entourer la boucle d'un bloc **`breakable { ... }`**. En interne, `break()` lance une exception que `breakable` rattrape.
+5. La dernière expression de la fonction, `answers`, est la valeur renvoyée.
+6. `play(...)` renvoie une `List[String]`, et **`.foreach(println)`** affiche chaque élément. On passe directement la fonction `println` en argument (voir Session 3).
 
-#### Version fonctionnelle
+#### Pour aller plus loin : une version sans `var` ni `break`
 
-Décomposons le problème autrement : *quelles tentatives garde-t-on ?* Et *comment transforme-t-on chaque tentative en phrase ?*
+C'est la solution naturelle quand on vient de l'impératif. En style fonctionnel, on peut décomposer le problème autrement : *quelles tentatives garde-t-on ?* Et *comment transforme-t-on chaque tentative en phrase ?*
 
 ```scala
 def play(secret: Int, guesses: List[Int]): List[String] = {
@@ -404,7 +427,7 @@ def play(secret: Int, guesses: List[Int]): List[String] = {
 
 Plus aucune `var`, plus de `break`, et chaque étape se teste indépendamment.
 
-#### Bonus : version récursive
+#### Pour aller plus loin : version récursive
 
 La `List` est faite pour la récursion (tête + reste, cf. Session 2). Une troisième façon de faire :
 ```scala
@@ -616,6 +639,7 @@ Son intérêt principal : le **test d'appartenance** est effectivement en temps 
 
 ```scala
 object Main extends App {
+
   val words = List("A", "B", "A", "C", "B", "A")
 
   wordCount(words).toList.sortBy(_._1).foreach { case (word, count) =>
@@ -623,6 +647,7 @@ object Main extends App {
   }
 
   def wordCount(words: List[String]): Map[String, Int] =
+    // TODO: group equal words together, then count each group's size
     words.groupBy(identity).view.mapValues(_.size).toMap
 }
 ```
@@ -649,27 +674,38 @@ Pour l'affichage :
 
 ```scala
 object Main extends App {
-  val n = 100_000
+
+  val n = 100000
   val list = List.fill(n)(0)
   val vector = Vector.fill(n)(0)
 
-  val listPrepend = timeOperation(1 +: list)
-  val vectorPrepend = timeOperation(1 +: vector)
+  // TODO: time a prepend (1 +: collection) on each collection
 
-  val listAppend = timeOperation(list :+ 1)
-  val vectorAppend = timeOperation(vector :+ 1)
+  val vector_prepend_duration = timeOperation(1 +: vector)
+  val list_prepend_duration = timeOperation(1 +: list)
 
-  println(s"Prepend : List = $listPrepend ms, Vector = $vectorPrepend ms")
-  println(s"Append : List = $listAppend ms, Vector = $vectorAppend ms")
+  // TODO: time an append (collection :+ 1) on each collection
+  val vector_append_duration = timeOperation(vector :+ 0)
+  val list_append_duration = timeOperation(list :+ 0)
+
+  // TODO: println the two results, matching the format in the description
+  println(s"Prepend : List = $list_prepend_duration ms, Vector = $vector_prepend_duration ms Append : List = $list_append_duration ms, Vector = $vector_append_duration ms")
 
   def timeOperation(operation: => Unit): Long = {
-    val start = System.nanoTime()
+
+    val processStart:Long = System.currentTimeMillis()
     operation
-    val end = System.nanoTime()
-    (end - start) / 1_000_000
+    val processEnd:Long = System.currentTimeMillis()
+    val elapsed:Long = processEnd - processStart 
+    elapsed 
   }
 }
 ```
+
+Le déroulé :
+1. **`List.fill(n)(0)`** crée une collection de `n` éléments, tous égaux à `0`. La syntaxe à deux paires de parenthèses sera expliquée plus tard (on parle de *currying*) : la première donne la taille, la seconde la valeur de remplissage.
+2. On appelle `timeOperation` quatre fois, une par combinaison (ajout en tête ou en fin, `List` ou `Vector`). La valeur ajoutée (`1` ou `0`) n'a aucune importance, c'est l'opération qu'on mesure.
+3. **`System.currentTimeMillis()`** renvoie l'heure actuelle en millisecondes (un `Long`). On la note avant et après l'opération, et la différence donne la durée.
 
 #### Le paramètre by-name `=> Unit`
 
@@ -686,21 +722,13 @@ Avec **`operation: => Unit`** (noter la flèche), le paramètre est **by-name** 
 
 *Autre détail : `1 +: list` renvoie une `List[Int]`, pas un `Unit`. Le compilateur accepte quand même parce qu'il fait du "value discarding" : quand on attend `Unit`, il calcule la valeur puis la jette.*
 
-#### Pourquoi `nanoTime` plutôt que `currentTimeMillis`
-
-Ma première version utilisait `System.currentTimeMillis()`. Ça marche, mais :
-- `currentTimeMillis` donne l'heure "murale", qui peut être ajustée par le système (synchronisation NTP) pendant la mesure.
-- Sa précision réelle peut être de l'ordre de 10 ms sur certains OS, alors que les opérations mesurées sont souvent plus rapides que ça.
-
-`System.nanoTime()` est fait exactement pour mesurer des durées : monotone et bien plus précis. On divise par 1 000 000 pour repasser en millisecondes comme demandé.
-
 #### Ce qu'on observe
 
 Les chiffres exacts varient d'une machine à l'autre, mais le résultat attendu est toujours le même : **l'ajout en fin sur la `List` est le seul qui prend du temps** (il recopie les 100 000 cellules), les trois autres sont à 0 ms ou presque.
 
-*Un micro-benchmark comme celui-ci est approximatif : la JVM compile et optimise le code au fur et à mesure (JIT), donc le premier appel est souvent plus lent que les suivants. Pour des mesures sérieuses on utilise un outil dédié comme JMH, qui répète les mesures après une phase de "chauffe". Ici, l'ordre de grandeur suffit.*
+*Un micro-benchmark comme celui-ci est approximatif : la JVM compile et optimise le code au fur et à mesure (JIT), donc le premier appel est souvent plus lent que les suivants. Pour des mesures plus fines, on peut utiliser `System.nanoTime()` (précision à la nanoseconde, fait pour mesurer des durées), et pour des mesures sérieuses un outil dédié comme JMH, qui répète les mesures après une phase de "chauffe". Ici, l'ordre de grandeur suffit.*
 
-C'est aussi ce qui explique pourquoi ma version impérative de l'exercice 02 (`answers = answers :+ ...` dans une boucle) était une mauvaise idée : n ajouts en fin de `List`, chacun en O(n), ça donne du O(n²).
+C'est aussi ce qui explique le coût caché de `answers = answers :+ ...` dans la boucle de l'exercice 02 : n ajouts en fin de `List`, chacun en O(n), ça donne du O(n²). Sur 5 tentatives c'est invisible, sur des millions d'éléments on préférerait un `Vector` ou une des versions fonctionnelles.
 
 ---
 
@@ -811,6 +839,37 @@ C'est exactement le modèle de Spark : les données passent dans une série de t
 
 *Chaque étape d'une chaîne crée une collection intermédiaire complète. Pour de très grosses collections, on peut ajouter `.view` au début : les opérations deviennent alors **paresseuses** (lazy), elles sont combinées et appliquées élément par élément seulement quand on demande le résultat final, sans collection intermédiaire.*
 
+Sans `.view`, chaque étape produit une vraie collection :
+```scala
+val list = List(1, 2, 3, 4, 5, 6)
+
+list.filter(_ % 2 == 0)              // List(2, 4, 6)     ← 1re liste intermédiaire
+list.filter(_ % 2 == 0).map(_ * 3)   // List(6, 12, 18)   ← 2e liste intermédiaire
+list.filter(_ % 2 == 0).map(_ * 3).sum   // 36
+```
+Le déroulé est **étape par étape** : `filter` parcourt toute la liste et construit `List(2, 4, 6)`, puis `map` parcourt cette nouvelle liste et construit `List(6, 12, 18)`, puis `sum` la parcourt une dernière fois. Trois parcours, deux listes créées puis jetées.
+
+Avec `.view` :
+```scala
+list.view.filter(_ % 2 == 0)              // SeqView(<not computed>)
+list.view.filter(_ % 2 == 0).map(_ * 3)   // SeqView(<not computed>)
+list.view.filter(_ % 2 == 0).map(_ * 3).sum   // 36
+```
+Tant qu'on n'a pas demandé de résultat final, **rien n'est calculé** : `filter` et `map` ne font qu'enregistrer la recette. C'est `sum` qui déclenche le calcul, et le déroulé devient **élément par élément** :
+
+| Élément | `filter(_ % 2 == 0)` | `map(_ * 3)` | `sum` (accumulateur) |
+|---|---|---|---|
+| 1 | rejeté | — | 0 |
+| 2 | gardé | 6 | 6 |
+| 3 | rejeté | — | 6 |
+| 4 | gardé | 12 | 18 |
+| 5 | rejeté | — | 18 |
+| 6 | gardé | 18 | 36 |
+
+Un seul parcours, aucune liste intermédiaire : chaque élément traverse toute la chaîne avant qu'on passe au suivant. Même résultat, mais moins de mémoire utilisée. Pour récupérer une vraie collection à la fin d'une vue (au lieu d'une valeur comme `sum`), on la matérialise avec `.toList`, `.toVector`, `.toMap`...
+
+*Sur une petite liste comme celle-ci, `.view` n'apporte rien (il a même un léger coût). Il devient intéressant sur de grosses collections ou de longues chaînes. On retrouvera exactement ce principe en Spark : les transformations sont paresseuses, et seule une **action** finale déclenche le calcul.*
+
 ## groupBy
 
 **`groupBy(f)` :** Regroupe les éléments d'une collection selon une **fonction clé** `f`, et renvoie une `Map` : pour chaque valeur de clé, la liste des éléments qui l'ont produite.
@@ -824,6 +883,22 @@ words.groupBy(_.head)
 List(1, 2, 3, 4, 5).groupBy(_ % 2 == 0)
 // Map(false -> List(1, 3, 5), true -> List(2, 4))
 ```
+
+*`_.head` ne veut pas dire que les `String` sont des listes chaînées. `head` existe sur **toutes les séquences** (`List`, `Vector`, `Array`, `String`...) et renvoie le premier élément. Une `String` Scala est une `java.lang.String`, stockée en mémoire comme un tableau de caractères. Java ne lui donne pas de `head`, `filter` ou `map` : c'est Scala qui les ajoute par une **conversion implicite** vers `StringOps`. Ici, `_.head` renvoie donc le premier caractère du mot, et c'est pour ça que les clés de la `Map` sont des `Char` (`'a'`), pas des `String` (`"a"`).*
+
+```scala
+"apple".head             // 'a'
+"apple".tail             // "pple"
+"apple".filter(_ != 'p') // "ale"
+"apple".map(_.toUpper)   // "APPLE"
+```
+
+*Le coût dépend de la structure réelle, pas du nom de la méthode :*
+
+| | `head` | `tail` | accès `s(i)` |
+|---|---|---|---|
+| `List` | O(1) | O(1) (partage structurel) | O(n) |
+| `String` | O(1) (case 0) | O(n) (recopie de la chaîne) | O(1) |
 
 Pour **compter** des éléments identiques, on veut que la clé soit l'élément lui-même. On pourrait écrire `groupBy(x => x)`, mais Scala fournit une fonction toute faite pour ça : **`identity`**, la fonction qui renvoie son argument sans le modifier.
 ```scala
@@ -907,20 +982,23 @@ C'est l'équivalent d'une ligne de table en base de données : en Spark, on déc
 
 ```scala
 object Main extends App {
+
   val nums = List(1, 2, 3, 4, 5, 6)
   println(processNumbers(nums))
 
-  def processNumbers(nums: List[Int]): Int =
-    nums.filter(_ % 2 == 0).map(_ * 3).sum
+  def processNumbers(nums: List[Int]): Int = {
+    // TODO: filter -> map -> sum, chained
+    nums.filter(_ % 2 == 0).map(x => x*3).sum
+  }
 }
 ```
 
-C'est le pipeline de cours, mot pour mot :
+C'est le pipeline du cours :
 1. `filter(_ % 2 == 0)` → `List(2, 4, 6)`
-2. `map(_ * 3)` → `List(6, 12, 18)`
+2. `map(x => x*3)` → `List(6, 12, 18)`
 3. `sum` → `36`
 
-On aurait pu écrire `.map(x => x * 3)` (c'était ma première version), c'est strictement équivalent. On aurait aussi pu remplacer `sum` par `foldLeft(0)(_ + _)` ou `reduce(_ + _)`, mais `reduce` planterait sur une liste sans aucun nombre pair, alors que `sum` renvoie `0`.
+`.map(x => x*3)` et `.map(_ * 3)` sont strictement équivalents : `x` n'est utilisé qu'une fois, donc le placeholder `_` fonctionne aussi. On aurait pu remplacer `sum` par `foldLeft(0)(_ + _)` ou `reduce(_ + _)`, mais `reduce` planterait sur une liste sans aucun nombre pair, alors que `sum` renvoie `0`.
 
 Pour comparer, la version impérative :
 ```scala
@@ -936,20 +1014,16 @@ for (n <- nums) if (n % 2 == 0) total += n * 3
 
 ```scala
 object Main extends App {
-  val text = "Scala is great and Scala is functional"
 
+  val text = "Scala is great and Scala is functional"
   textPipeline(text).toList.sortBy(_._1).foreach { case (word, count) =>
     println(s"$word -> $count")
   }
 
-  def textPipeline(text: String): Map[String, Int] =
-    text
-      .split("\\s+")
-      .map(_.toLowerCase)
-      .filter(_.length >= 4)
-      .groupBy(identity)
-      .view.mapValues(_.length)
-      .toMap
+  def textPipeline(text: String): Map[String, Int] = {
+    // TODO: split -> lowercase -> filter by length -> count occurrences
+    text.toLowerCase().split(" ").filter(s => s.length > 3).groupBy(identity).view.mapValues(_.size).toMap
+  }
 }
 ```
 Sortie attendue :
@@ -960,32 +1034,14 @@ scala -> 2
 ```
 
 Le déroulé avec `"Scala is great and Scala is functional"` :
-1. `split("\\s+")` → `Array("Scala", "is", "great", "and", "Scala", "is", "functional")`
-2. `map(_.toLowerCase)` → `Array("scala", "is", "great", "and", "scala", "is", "functional")`
-3. `filter(_.length >= 4)` → `Array("scala", "great", "scala", "functional")`
+1. `toLowerCase()` → `"scala is great and scala is functional"`. On met tout le texte en minuscules d'un coup, avant de le découper : le résultat est le même que mot par mot.
+2. `split(" ")` → `Array("scala", "is", "great", "and", "scala", "is", "functional")`
+3. `filter(s => s.length > 3)` → `Array("scala", "great", "scala", "functional")`. Pour des entiers, `> 3` est équivalent à `>= 4`.
 4. `groupBy(identity)` → `Map("scala" -> Array("scala", "scala"), "great" -> ..., "functional" -> ...)`
-5. `view.mapValues(_.length).toMap` → `Map("scala" -> 2, "great" -> 1, "functional" -> 1)`
+5. `view.mapValues(_.size).toMap` → `Map("scala" -> 2, "great" -> 1, "functional" -> 1)`
 
 La seconde moitié du pipeline est exactement l'exercice 03 : on a juste ajouté une préparation du texte avant.
 
-Quelques différences avec ma première version (`text.toLowerCase().split(" ").filter(s => s.length > 3)...`), qui donnait le bon résultat sur l'exemple :
-- **`split("\\s+")` au lieu de `split(" ")` :** l'énoncé dit "sur les espaces blancs" (*whitespace*). `split` prend une **expression régulière** : `\s` désigne n'importe quel caractère blanc (espace, tabulation, retour à la ligne) et `+` veut dire "un ou plusieurs". Avec `split(" ")`, deux espaces consécutifs produiraient un mot vide `""`, et une tabulation ne séparerait rien. (Le `\` est doublé parce qu'il faut l'échapper dans une chaîne Scala.)
-- **`_.length >= 4` au lieu de `s.length > 3` :** c'est équivalent pour des entiers, mais recopier la condition de l'énoncé telle quelle ("longueur ≥ 4") rend le code plus facile à relire.
-- **Minuscules avant ou après le split :** les deux marchent. Le faire mot par mot suit l'ordre de la consigne, le faire sur tout le texte d'un coup est un poil plus efficace. Aucune importance ici.
+Quelques remarques :
 - `split` renvoie un `Array` (le tableau Java), pas une `List`. Toutes les méthodes de collection (`map`, `filter`, `groupBy`...) marchent quand même dessus.
-
----
-
-# Récap des Sessions 1 à 3
-
-- **Préférer `val` à `var`**, et les collections immuables (celles par défaut).
-- **Tout est expression** : `if/else`, les blocs, les fonctions renvoient leur dernière valeur, pas de `return`.
-- **`for ... yield`** construit une collection, `for` sans `yield` ne sert qu'aux effets de bord.
-- **List** = liste chaînée : rapide en tête, lente en fin et en accès indexé. **Vector** = arbre à 32 branches : rapide partout.
-- Les collections immuables ne recopient pas tout grâce au **partage structurel**.
-- **Tuples** : `(a, b)`, `._1`, `._2`. `a -> b` est un tuple. `sortBy(_._1)` trie par le premier élément.
-- **Map** : `get` renvoie une `Option`, pas d'ordre garanti.
-- Les **fonctions sont des valeurs**, `_` est un raccourci pour les lambdas simples.
-- **filter / map / reduce / foldLeft** remplacent les boucles, et se chaînent en **pipelines**.
-- **`groupBy(identity).view.mapValues(_.size).toMap`** pour compter (ou `groupMapReduce`).
-- **case class** = conteneur de données immuable avec `equals`, `toString`, `copy` gratuits.
+- `split` prend en fait une **expression régulière** en argument. Pour découper sur n'importe quel espace blanc (plusieurs espaces d'affilée, tabulations, retours à la ligne), on peut écrire `split("\\s+")` : `\s` désigne un caractère blanc et `+` veut dire "un ou plusieurs". Le `\` est doublé parce qu'il faut l'échapper dans une chaîne Scala.
